@@ -95,8 +95,7 @@
 
     <!-- Hero Section (Video Animation) -->
     <section id="hero" class="relative h-[450vh]">
-        <div class="sticky top-0 h-screen w-full overflow-hidden"
-            style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; justify-items: flex-start; z-index: 10;">
+        <div class="sticky top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row items-center justify-between z-10 py-32 md:py-0">
 
             <!-- Hero Background Layer with Particles -->
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -146,7 +145,7 @@
 
             <!-- Separate Right Column -->
             <div
-                class="z-30 w-full h-full pointer-events-none flex flex-col items-end justify-center px-8 md:px-16 lg:px-24 mix-blend-difference">
+                class="z-30 w-full flex flex-col items-end px-8 md:px-16 lg:px-24 mix-blend-difference mb-8 md:mb-0 md:h-full md:justify-center">
                 <div class="text-white font-semibold text-right leading-tight font-sans tracking-tight drop-shadow-2xl">
                     <span class="block min-h-[1.2em]"><span
                             class="typewriter-line text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-gray-200"
@@ -630,9 +629,9 @@ frame.capture();
     </section>
 
     <!-- Projects Section (Horizontal Scroll) -->
-    <section id="work" class="relative h-[400vh] bg-transparent">
-        <div class="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-24">
-            <div class="px-8 md:px-24 absolute top-24 left-0 z-10 w-full flex justify-between items-end">
+    <section id="work" class="relative md:h-[400vh] bg-transparent">
+        <div class="md:sticky md:top-0 md:h-screen flex flex-col justify-center overflow-hidden py-24">
+            <div class="px-8 md:px-24 relative md:absolute md:top-24 left-0 z-10 w-full flex justify-between items-end mb-12 md:mb-0">
                 <h2 class="text-5xl md:text-7xl font-bold tracking-tighter">Selected<br /><span
                         class="text-gray-500">Work</span></h2>
                 <div class="hidden md:flex gap-2 items-center text-gray-500 pb-2">
@@ -641,11 +640,11 @@ frame.capture();
                 </div>
             </div>
 
-            <div id="projects-container" class="flex gap-8 md:gap-16 px-8 md:px-24 mt-32 w-max">
+            <div id="projects-container" class="flex flex-col md:flex-row gap-8 md:gap-16 px-8 md:px-24 md:mt-32 w-full md:w-max">
 
                 <!-- Project 1 -->
                 <div onclick="navigateWithScrollSave('project-food-joint.html')"
-                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    class="w-full md:w-[60vw] lg:w-[45vw] h-[50vh] md:h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
                     <!-- Background Placeholder / Image will go here if added later -->
                     <div
                         class="absolute inset-0 bg-gradient-to-tr from-[#0a0a0a] to-[#151515] z-0 transition-transform duration-700 group-hover:scale-105">
@@ -676,7 +675,7 @@ frame.capture();
 
                 <!-- Project 2 -->
                 <div onclick="navigateWithScrollSave('project-college.html')"
-                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    class="w-full md:w-[60vw] lg:w-[45vw] h-[50vh] md:h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-[#050505] to-[#1a1a1a] z-0 transition-transform duration-700 group-hover:scale-105">
                     </div>
@@ -705,7 +704,7 @@ frame.capture();
 
                 <!-- Project 3 -->
                 <div onclick="navigateWithScrollSave('project-ap-web-world.html')"
-                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    class="w-full md:w-[60vw] lg:w-[45vw] h-[50vh] md:h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
                     <div
                         class="absolute inset-0 bg-gradient-to-r from-[#111] to-[#000] z-0 transition-transform duration-700 group-hover:scale-105">
                     </div>
@@ -734,7 +733,7 @@ frame.capture();
 
                 <!-- Project 4 -->
                 <div onclick="navigateWithScrollSave('project-aura-circle.html')"
-                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    class="w-full md:w-[60vw] lg:w-[45vw] h-[50vh] md:h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
                     <div
                         class="absolute inset-0 bg-gradient-to-r from-[#111] to-[#000] z-0 transition-transform duration-700 group-hover:scale-105">
                     </div>

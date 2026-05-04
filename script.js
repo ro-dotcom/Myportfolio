@@ -761,23 +761,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const projectsContainer = document.getElementById("projects-container");
 
-    // Pin the #work section and translate the container horizontally
-    gsap.to(projectsContainer, {
-        x: () => {
-            // Full scroll width of container minus the viewport width 
-            // Plus some padding offset
-            const scrollDistance = projectsContainer.scrollWidth - window.innerWidth + 100;
-            return -scrollDistance;
-        },
-        ease: "none",
-        scrollTrigger: {
-            trigger: "#work",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1, // Smooth scrub
-            invalidateOnRefresh: true, // Recalculate on resize
-        }
-    });
+    // The horizontal scroll animation is now exclusively handled inside the mm.add("(min-width: 768px)") block below
 
     // 3. MatchMedia Integration: Wrap Desktop-Only or Responsive Animations
     mm.add("(min-width: 768px)", () => {
