@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Hide hero content initially (insurance if CSS classes haven't loaded)
-    gsap.set(["nav a", ".stagger-text", "#hero-video", ".typewriter-line"], { opacity: 0 });
+    gsap.set(["nav a", ".stagger-text", "#hero-canvas", ".typewriter-line"], { opacity: 0 });
 
     // Precise path strings enabling buttery-smooth GSAP primitive morphing
     const paths = {
@@ -115,8 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
             duration: 1.2,
             ease: "power4.inOut"
         }, "<")
-        // 1f. Fade in background video
-        .to("#hero-video", {
+        // 1f. Fade in background canvas
+        .to("#hero-canvas", {
             opacity: 1,
             duration: 1.5,
             ease: "power3.out"
@@ -366,26 +366,108 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ----------------------------------------------------------------
-    // 4. Hero Section Video ScrollTrigger (Performance Fix)
+    // 4. Hero Section Canvas Image Sequence & ScrollTrigger (Optimized)
     // ----------------------------------------------------------------
-    const video = document.getElementById("hero-video");
-    if (video) {
-        // Wait for metadata to ensure we know the video duration before scrubbing
-        video.addEventListener('loadedmetadata', () => {
-            gsap.to(video, {
-                currentTime: video.duration || 5, // fallback if duration missing
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#hero",
-                    start: "top top",
-                    end: "bottom bottom",
-                    scrub: 1.5 // Buttery smooth interpolation
-                }
-            });
-        });
+    const canvas = document.getElementById("hero-canvas");
+    let context;
+    if (canvas) {
+        context = canvas.getContext("2d", { alpha: true });
+
+        // Resize handler
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            context.scale(dpr, dpr);
+            render(); 
+        }
+
+        function resetCanvasBounds() {
+            if(!canvas) return;
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            resizeCanvas();
+        }
+
+        const frameCount = 210;
+        const currentFrame = index => `atul (${index}).png`;
+
+        const images = new Array(frameCount);
+        const imageSeq = { frame: 1 };
+
+        // Async batch preloading to prevent Chrome main-thread freezes
+        const preloadQueue = [];
+        for (let i = 1; i <= frameCount; i++) preloadQueue.push(i);
+
+        function processNextBatch() {
+            const batchSize = 10; // Load 10 images concurrently
+            if (preloadQueue.length === 0) return;
+            
+            let loadedThisBatch = 0;
+            const toLoad = Math.min(batchSize, preloadQueue.length);
+            
+            for (let i = 0; i < toLoad; i++) {
+                const index = preloadQueue.shift();
+                const img = new Image();
+                img.onload = () => {
+                    images[index - 1] = img;
+                    if (index === 1) resizeCanvas(); // Render first frame immediately
+                    loadedThisBatch++;
+                    if (loadedThisBatch === toLoad) {
+                        setTimeout(processNextBatch, 20); // Yield to main thread
+                    }
+                };
+                img.onerror = () => {
+                    loadedThisBatch++;
+                    if (loadedThisBatch === toLoad) setTimeout(processNextBatch, 20);
+                };
+                img.src = currentFrame(index);
+            }
+        }
         
-        // Force load for mobile
-        video.load();
+        processNextBatch(); // Start lazy loading
+        window.addEventListener("resize", resetCanvasBounds);
+
+        function render() {
+            if(!context) return;
+            context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            const currentFrameNum = Math.round(imageSeq.frame) || 1;
+            const img = images[currentFrameNum - 1];
+
+            if (img && img.complete && img.naturalWidth !== 0) {
+                const canvasRenderWidth = window.innerWidth;
+                const canvasRenderHeight = window.innerHeight;
+
+                const scaleX = canvasRenderWidth / img.width;
+                const scaleY = canvasRenderHeight / img.height;
+
+                const isMobile = window.innerWidth < 768;
+                const baseScale = Math.min(scaleX, scaleY);
+                const scaleFactor = isMobile ? baseScale * 1.5 : baseScale * 0.9;
+
+                const renderW = img.width * scaleFactor;
+                const renderH = img.height * scaleFactor;
+
+                const x = (canvasRenderWidth / 2) - (renderW / 2);
+                const y = (canvasRenderHeight / 2) - (renderH / 2) + (isMobile ? 50 : 20);
+
+                context.drawImage(img, x, y, renderW, renderH);
+            }
+        }
+
+        gsap.to(imageSeq, {
+            frame: frameCount,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#hero",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.5,
+                onUpdate: render
+            }
+        });
     }
 
     // ----------------------------------------------------------------
