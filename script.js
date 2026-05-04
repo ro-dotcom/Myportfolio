@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Hide hero content initially (insurance if CSS classes haven't loaded)
-    gsap.set(["nav a", ".stagger-text", "#hero-canvas", ".typewriter-line"], { opacity: 0 });
+    gsap.set(["nav a", ".stagger-text", "#hero-video", ".typewriter-line"], { opacity: 0 });
 
     // Precise path strings enabling buttery-smooth GSAP primitive morphing
     const paths = {
@@ -115,8 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
             duration: 1.2,
             ease: "power4.inOut"
         }, "<")
-        // 1f. Fade in background canvas
-        .to("#hero-canvas", {
+        // 1f. Fade in background video
+        .to("#hero-video", {
             opacity: 1,
             duration: 1.5,
             ease: "power3.out"
@@ -366,104 +366,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ----------------------------------------------------------------
-    // 4. Hero Section Canvas Image Sequence & ScrollTrigger
+    // 4. Hero Section Video ScrollTrigger (Performance Fix)
     // ----------------------------------------------------------------
-    const canvas = document.getElementById("hero-canvas");
-    const context = canvas.getContext("2d");
-
-    // Resize handler
-    function resizeCanvas() {
-        // High DPI displays support
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
-
-        // Scale down CSS width/height mathematically
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-
-        context.scale(dpr, dpr);
-        render(); // redraw current frame
+    const video = document.getElementById("hero-video");
+    if (video) {
+        // Wait for metadata to ensure we know the video duration before scrubbing
+        video.addEventListener('loadedmetadata', () => {
+            gsap.to(video, {
+                currentTime: video.duration || 5, // fallback if duration missing
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1.5 // Buttery smooth interpolation
+                }
+            });
+        });
+        
+        // Force load for mobile
+        video.load();
     }
-
-    // Explicitly reset canvas bounds mathematically on resize
-    function resetCanvasBounds() {
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        resizeCanvas();
-    }
-
-    // Total frames available in the directory
-    const frameCount = 210;
-    const currentFrame = index => `atul (${index}).png`;
-
-    const images = [];
-    const imageSeq = {
-        frame: 1
-    };
-
-    // Preload imagery
-    for (let i = 1; i <= frameCount; i++) {
-        const img = new Image();
-        img.src = currentFrame(i);
-        images.push(img);
-    }
-
-    // Draw the first image as soon as it loads to prevent empty canvas
-    images[0].onload = () => {
-        resizeCanvas();
-    };
-
-    window.addEventListener("resize", resetCanvasBounds);
-
-    function render() {
-        // Clear canvas
-        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        // Use Math.round to get the closest integer frame safely
-        const currentFrameNum = Math.round(imageSeq.frame) || 1;
-        const img = images[currentFrameNum - 1];
-
-        if (img && img.complete && img.naturalWidth !== 0) {
-            // Calculate aspect ratio covering / containment
-            const canvasRenderWidth = window.innerWidth;
-            const canvasRenderHeight = window.innerHeight;
-
-            const scaleX = canvasRenderWidth / img.width;
-            const scaleY = canvasRenderHeight / img.height;
-
-            // Determine scale: Using Math.min ensures it fits inside ("contain"), 
-            // modify to Math.max if we want to "cover". Let's use a dynamic size
-            // based on device for avatar positioning.
-            const isMobile = window.innerWidth < 768;
-            const baseScale = Math.min(scaleX, scaleY);
-            // Scale up slightly to make avatar prominent
-            const scaleFactor = isMobile ? baseScale * 1.5 : baseScale * 0.9;
-
-            const renderW = img.width * scaleFactor;
-            const renderH = img.height * scaleFactor;
-
-            // Center
-            const x = (canvasRenderWidth / 2) - (renderW / 2);
-            // Push slightly lower
-            const y = (canvasRenderHeight / 2) - (renderH / 2) + (isMobile ? 50 : 20);
-
-            context.drawImage(img, x, y, renderW, renderH);
-        }
-    }
-
-    // Canvas GSAP Animation tied to scroll
-    gsap.to(imageSeq, {
-        frame: frameCount,
-        // Removed snap to allow silky float interpolation during scrub
-        ease: "none",
-        scrollTrigger: {
-            trigger: "#hero",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1.5, // Increased scrub for butter-smooth lag
-            onUpdate: render
-        }
-    });
 
     // ----------------------------------------------------------------
     // 4.5 Hero Typewriter Scroll Effect
