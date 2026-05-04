@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Page Not Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;600;800&family=Syne:wght@800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        black: '#050505',
+                        white: '#FFFFFF',
+                        accent: '#007AFF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body
+    class="bg-black text-white font-sans antialiased overflow-x-hidden cursor-none h-screen w-screen flex items-center justify-center relative">
+
+    <!-- Custom Cursor -->
+    <div id="cursor"
+        class="fixed top-0 left-0 w-5 h-5 rounded-full bg-white pointer-events-none z-50 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out mix-blend-difference">
+    </div>
+
+    <!-- Background Glow Effect -->
+    <div id="bg-glow"
+        class="fixed top-0 left-0 w-[40vw] h-[40vw] rounded-full bg-accent opacity-10 blur-[100px] pointer-events-none z-0 mix-blend-screen">
+    </div>
+
+    <!-- Animated Grid Background -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-[0.03]"
+        style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 50px 50px; animation: grid-move 20s linear infinite;">
+    </div>
+
+    <style>
+        @keyframes grid-move {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+
+            100% {
+                transform: translateY(50px) translateX(50px);
+            }
+        }
+
+        @keyframes marquee-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        @keyframes marquee-right {
+            0% {
+                transform: translateX(-50%);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+
+    <!-- Background Marquee Text -->
+    <div
+        class="absolute inset-0 w-full h-full flex flex-col items-center justify-center pointer-events-none z-0 opacity-10 overflow-hidden scale-110 -rotate-6 gap-8">
+        <div class="flex whitespace-nowrap" style="animation: marquee-left 40s linear infinite;">
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.6); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.6); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.6); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.6); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+        </div>
+        <div class="flex whitespace-nowrap" style="animation: marquee-right 35s linear infinite;">
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.3); font-family: 'Audiowide', cursive;">URL
+                INCORRECT - 404 ERROR -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.3); font-family: 'Audiowide', cursive;">URL
+                INCORRECT - 404 ERROR -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.3); font-family: 'Audiowide', cursive;">URL
+                INCORRECT - 404 ERROR -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.3); font-family: 'Audiowide', cursive;">URL
+                INCORRECT - 404 ERROR -</h1>
+        </div>
+        <div class="flex whitespace-nowrap" style="animation: marquee-left 45s linear infinite;">
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.5); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.5); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.5); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+            <h1 class="text-[10vw] font-black uppercase leading-none text-transparent mx-4"
+                style="-webkit-text-stroke: 2px rgba(255, 255, 255, 0.5); font-family: 'Audiowide', cursive;">404 ERROR
+                - PAGE NOT FOUND -</h1>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main
+        class="relative z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center justify-center w-full mt-10">
+
+        <!-- 404 Container -->
+        <div class="flex items-center justify-center gap-4 md:gap-8 mb-8" style="perspective: 1000px;">
+            <div class="text-[30vw] md:text-[22vw] font-black leading-none text-white tracking-tighter drop-shadow-2xl select-none"
+                style="font-family: 'Syne', sans-serif;">4</div>
+
+            <!-- 3D Emoji Face -->
+            <div id="emoji-face"
+                class="relative w-[30vw] h-[30vw] md:w-[20vw] md:h-[20vw] rounded-full flex items-center justify-center pointer-events-auto"
+                style="background: radial-gradient(circle at 35% 35%, #e0ff66, #9dd428); box-shadow: inset -10px -10px 30px rgba(0,0,0,0.3), 15px 15px 40px rgba(0,0,0,0.5); transform-style: preserve-3d;">
+
+                <!-- Inner Face Container for Parallax -->
+                <div id="face-elements" class="absolute inset-0 flex flex-col items-center justify-center w-full h-full"
+                    style="transform: translateZ(40px);">
+                    <!-- Eyes -->
+                    <div class="flex justify-between w-[55%] mb-[8%] mt-[5%] relative z-10">
+                        <!-- Left Eye -->
+                        <div class="relative w-[28%] aspect-square">
+                            <div class="absolute inset-0 bg-[#1a1a1a] rounded-full transform rotate-45 scale-x-[0.25]">
+                            </div>
+                            <div class="absolute inset-0 bg-[#1a1a1a] rounded-full transform -rotate-45 scale-x-[0.25]">
+                            </div>
+                        </div>
+                        <!-- Right Eye -->
+                        <div class="relative w-[28%] aspect-square">
+                            <div class="absolute inset-0 bg-[#1a1a1a] rounded-full transform rotate-45 scale-x-[0.25]">
+                            </div>
+                            <div class="absolute inset-0 bg-[#1a1a1a] rounded-full transform -rotate-45 scale-x-[0.25]">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mouth -->
+                    <div class="w-[22%] aspect-square bg-[#1a1a1a] rounded-full mt-[5%] relative z-10"></div>
+                </div>
+            </div>
+
+            <div class="text-[30vw] md:text-[22vw] font-black leading-none text-white tracking-tighter drop-shadow-2xl select-none"
+                style="font-family: 'Syne', sans-serif;">4</div>
+        </div>
+
+        <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed mb-10 max-w-2xl mt-4">
+            Oops! The page you're looking for can't be found because some maintenance is being done on that page.
+        </p>
+
+        <a href="index.html"
+            class="magnetic inline-flex items-center justify-center px-8 py-4 bg-transparent border border-white/20 text-white rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10 transition-colors group-hover:text-black">Return Home</span>
+        </a>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cursor = document.getElementById("cursor");
+            const bgGlow = document.getElementById("bg-glow");
+            const emojiFace = document.getElementById("emoji-face");
+            const faceElements = document.getElementById("face-elements");
+
+            gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+            gsap.set(bgGlow, { xPercent: -50, yPercent: -50 });
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = mouseX;
+            let cursorY = mouseY;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                // 3D Emoji tracking
+                const x = (e.clientX / window.innerWidth - 0.5) * 2; // -1 to 1
+                const y = (e.clientY / window.innerHeight - 0.5) * 2; // -1 to 1
+
+                if (emojiFace) {
+                    gsap.to(emojiFace, {
+                        rotationY: x * 40,
+                        rotationX: -y * 40,
+                        ease: "power2.out",
+                        duration: 0.6
+                    });
+                }
+
+                if (faceElements) {
+                    gsap.to(faceElements, {
+                        x: x * 25,
+                        y: y * 25,
+                        ease: "power2.out",
+                        duration: 0.6
+                    });
+                }
+            });
+
+            // Cursor interpolation
+            gsap.ticker.add(() => {
+                const dt = 1.0 - Math.pow(1.0 - 0.2, gsap.ticker.deltaRatio());
+                cursorX += (mouseX - cursorX) * dt;
+                cursorY += (mouseY - cursorY) * dt;
+
+                gsap.set(cursor, { x: cursorX, y: cursorY });
+            });
+
+            gsap.to(bgGlow, {
+                x: () => mouseX,
+                y: () => mouseY,
+                duration: 1.5,
+                ease: "power2.out",
+                overwrite: "auto",
+                scrollTrigger: null
+            });
+
+            // Keep track of cursor movement for bgGlow
+            window.addEventListener('mousemove', () => {
+                gsap.to(bgGlow, {
+                    x: mouseX,
+                    y: mouseY,
+                    duration: 1.5,
+                    ease: "power2.out",
+                    overwrite: "auto"
+                });
+            });
+
+            // Magnetic effect for buttons
+            const magneticBtns = document.querySelectorAll('.magnetic');
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    gsap.to(cursor, { scale: 2.5, backgroundColor: "transparent", border: "1px solid white", duration: 0.3 });
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(cursor, { scale: 1, backgroundColor: "white", border: "none", duration: 0.3 });
+                    gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: "power3.out" });
+                });
+
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
+                    const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
+                    gsap.to(btn, { x: x, y: y, duration: 0.6, ease: "power3.out" });
+                });
+            });
+
+            // Emoji interactive hover effect
+            if (emojiFace) {
+                emojiFace.addEventListener('mouseenter', () => {
+                    gsap.to(cursor, { scale: 0, duration: 0.3 }); // Hide cursor over emoji to enhance 3D feel
+                    gsap.to(emojiFace, { scale: 1.05, duration: 0.3 });
+                });
+
+                emojiFace.addEventListener('mouseleave', () => {
+                    gsap.to(cursor, { scale: 1, duration: 0.3 });
+                    gsap.to(emojiFace, { scale: 1, duration: 0.3 });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

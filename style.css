@@ -1,0 +1,541 @@
+/* Core Reset & Performance */
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: none; /* Globally hide default cursor to use custom cursor */
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: none; 
+    overflow-x: hidden;
+}
+
+/* Scroll Progress Bar */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(to right, #007AFF, #00F0FF);
+    z-index: 10001;
+    box-shadow: 0 0 10px rgba(0, 122, 255, 0.5);
+}
+
+/* Flash Prevention: Hide hero text until revealed by GSAP loader */
+.stagger-text,
+#hero-bio,
+#hero-canvas,
+.typewriter-line,
+nav a {
+    opacity: 0;
+}
+
+/* Override default link cursor */
+a, button, [role="button"], input, select, textarea {
+    cursor: none !important;
+}
+
+/* Custom Selection */
+::selection {
+    background-color: #007AFF;
+    color: #FFFFFF;
+}
+
+/* Glassmorphism utility - Ultra Premium */
+.glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+    will-change: transform, box-shadow;
+}
+
+.glass-card:hover {
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 40px rgba(0, 122, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    z-index: 10;
+}
+
+/* Luxury Text Glow */
+.text-luxury {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    letter-spacing: -0.02em;
+}
+
+.text-glow-accent {
+    text-shadow: 0 0 15px rgba(0, 122, 255, 0.3);
+}
+
+/* Shimmer Button Effect */
+.btn-shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transform: rotate(25deg);
+    transition: left 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn-shimmer:hover::after {
+    left: 150%;
+}
+
+/* Magnetic element wrapper setup */
+.magnetic {
+    display: inline-block;
+    will-change: transform;
+}
+
+/* Allow canvas to ignore interaction (pointer events) to ensure scrolling */
+canvas {
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Smoke Trail Canvas */
+#smoke-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* Main Cursor Pointer */
+#cursor {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, border-width 0.3s ease;
+    will-change: width, height, transform;
+}
+
+#cursor.link-hover {
+    width: 40px;
+    height: 40px;
+    border-width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+}
+
+/* ----------------------------------------------------------------
+   Footer Grid Mobile Restructure
+---------------------------------------------------------------- */
+@media (max-width: 900px) {
+    .content-anchor {
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+    }
+    .content-anchor .stagger-social {
+        justify-content: center !important;
+    }
+    .content-anchor > div:first-child {
+        align-items: center !important;
+    }
+}
+
+/* ----------------------------------------------------------------
+   Hobbies & Passions Section
+---------------------------------------------------------------- */
+:root {
+    --off-white: #050505;
+    --charcoal: #FFFFFF;
+    --amber: #007AFF; /* Using site's accent color for dark theme consistency */
+    --transition-smooth: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.bg-offwhite { background-color: var(--off-white); }
+.text-charcoal { color: var(--charcoal); }
+.text-amber { color: var(--amber); }
+
+.hobby-item {
+    transition: all 0.5s var(--transition-smooth);
+}
+
+.hobby-item .hobby-name {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: rgba(255, 255, 255, 0.4); /* Increased visibility from 0.1 to 0.4 */
+    transition: all 0.5s var(--transition-smooth);
+    display: inline-block;
+}
+
+.hobby-item:hover .hobby-name,
+.hobby-item.active .hobby-name {
+    color: var(--charcoal);
+    transform: translateX(10px);
+}
+
+.hobby-item.active .hobby-name {
+    text-shadow: 0 0 30px rgba(0, 122, 255, 0.4);
+}
+
+/* Underline animation for active hobby */
+.hobby-item .hobby-text-container::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--amber);
+    transition: width 0.5s var(--transition-smooth);
+}
+
+.hobby-item.active .hobby-text-container::after {
+    width: 100%;
+}
+
+/* Kinetic Blurred Text Stack */
+.hobby-text-container::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.8s var(--transition-smooth);
+    color: var(--amber);
+}
+
+.hobby-item:hover .hobby-text-container::before,
+.hobby-item.active .hobby-text-container::before {
+    opacity: 0.3;
+    filter: blur(15px);
+    transform: translate(-5px, -2px) skewX(-5deg);
+}
+
+.hobby-arrow {
+    font-size: 1.5rem;
+    color: var(--amber);
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.hobby-item:hover .hobby-arrow {
+    transform: translateX(5px);
+}
+
+#description-card {
+    min-height: 420px;
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.hobby-visual-container {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 150px;
+    height: 150px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;
+    transition: all 0.8s var(--transition-smooth);
+}
+
+.hobby-item.active ~ .description-column .hobby-visual-container {
+    opacity: 0.2;
+    transform: rotate(10deg) scale(1.1);
+}
+
+.shadow-premium {
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.05);
+}
+
+.luxury-heading {
+    white-space: nowrap; /* Prevent single letters from wrapping */
+}
+
+@media (max-width: 1024px) {
+    .luxury-heading { white-space: normal; } /* Allow wrap for mobile but controlled */
+}
+
+@media (max-width: 768px) {
+    #hobbies-portfolio {
+        padding: 60px 20px;
+    }
+    .hobby-item .hobby-name {
+        font-size: 2rem;
+    }
+    #description-card {
+        min-height: auto;
+    }
+}
+
+/* ----------------------------------------------------------------
+   3D Trading Card Marquee Gallery
+---------------------------------------------------------------- */
+#trading-cards-gallery {
+    perspective: 3000px; 
+    transform-style: preserve-3d;
+}
+
+.marquee-container {
+    display: flex;
+    overflow: visible; /* Changed from hidden to allow 3D overflow */
+    user-select: none;
+    mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 85%, transparent);
+    padding: 120px 0;
+    margin: -80px 0;
+    perspective: 2000px;
+    transform-style: preserve-3d;
+}
+
+.marquee-row-top, .marquee-row-bottom {
+    display: flex;
+    flex-shrink: 0;
+    min-width: 100%;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+@keyframes scroll-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+}
+
+.marquee-row-top {
+    animation: scroll-right 60s linear infinite; /* Left -> Right */
+}
+
+.marquee-row-bottom {
+    animation: scroll-left 65s linear infinite; /* Right -> Left */
+}
+
+/* Interaction: Slow down on hover */
+.marquee-container:hover .marquee-row-top,
+.marquee-container:hover .marquee-row-bottom {
+    animation-duration: 250s; /* Dramatically slow down */
+    cursor: grab;
+}
+
+.trading-card {
+    flex: 0 0 340px;
+    height: 480px;
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.9) 0%, rgba(10, 10, 10, 1) 100%);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    transform: rotateY(-25deg) rotateX(15deg) translateZ(0); /* Explicitly set translateZ */
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+    box-shadow: -25px 25px 50px rgba(0, 0, 0, 0.7);
+    margin-right: 60px;
+    position: relative;
+}
+
+.trading-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("https://www.transparenttextures.com/patterns/pinstriped-suit.png");
+    opacity: 0.05;
+    border-radius: 18px;
+    pointer-events: none;
+}
+
+.trading-card:hover {
+    transform: rotateY(-5deg) rotateX(5deg) scale(1.08) translateZ(50px);
+    border-color: var(--amber);
+    box-shadow: 0 0 50px rgba(0, 122, 255, 0.2);
+}
+
+.card-inner {
+    transform: translateZ(20px);
+}
+
+@media (max-width: 768px) {
+    .trading-card {
+        flex: 0 0 280px;
+        height: 400px;
+        transform: none;
+    }
+}
+
+/* ----------------------------------------------------------------
+   Enhanced Education & Milestones UI
+---------------------------------------------------------------- */
+.milestone-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0, 122, 255, 0.1);
+    transition: all 0.5s var(--transition-smooth);
+    z-index: 30;
+}
+
+.timeline-item:hover .milestone-icon {
+    background: var(--amber);
+    box-shadow: 0 0 40px rgba(0, 122, 255, 0.5);
+    transform: scale(1.1) rotate(10deg);
+}
+
+.milestone-icon svg {
+    width: 28px;
+    height: 28px;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+    stroke: currentColor;
+}
+
+.timeline-item:hover .milestone-icon svg {
+    color: white;
+    transform: scale(1.1);
+}
+
+.year-badge {
+    position: absolute;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 900;
+    font-size: 8rem;
+    color: rgba(255, 255, 255, 0.02);
+    line-height: 1;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+}
+
+.milestone-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform 0.6s var(--transition-smooth), border-color 0.4s ease;
+}
+
+.milestone-card:hover {
+    border-color: rgba(0, 122, 255, 0.4);
+}
+
+.milestone-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 45%,
+        rgba(255, 255, 255, 0.05) 48%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 52%,
+        transparent 55%
+    );
+    transform: rotate(25deg) translateY(100%);
+    transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    pointer-events: none;
+}
+
+.milestone-card:hover::after {
+    transform: rotate(25deg) translateY(-100%);
+}
+
+.skill-tag {
+    font-size: 10px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.milestone-card:hover .skill-tag {
+    border-color: var(--amber);
+    color: white;
+}
+
+.timeline-dot {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+/* ----------------------------------------------------------------
+   Animated Background Particles (CSS Only)
+---------------------------------------------------------------- */
+.hero-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.1; }
+    90% { opacity: 0.1; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Section Smooth Transitions */
+section {
+    transition: background-color 1s ease;
+}
+
+.section-reveal {
+    mask-image: linear-gradient(to bottom, black 80%, transparent);
+}

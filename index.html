@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atul | Creative Web Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Syne:wght@800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        black: '#050505',
+                        white: '#FFFFFF',
+                        accent: '#007AFF',
+                        offwhite: '#F9F9F7',
+                        charcoal: '#1A1A1A',
+                        amber: '#FFC107',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-[#050505] text-white selection:bg-accent selection:text-white">
+    <!-- Top Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Preloader (Geometric Flux Reveal) -->
+    <div id="loader"
+        class="fixed top-0 left-0 w-full h-full z-[9999] flex flex-col items-center justify-center pointer-events-none overflow-hidden">
+        <!-- Split background panels for cinematic lens opening -->
+        <div id="loader-top" class="absolute top-0 left-0 w-full h-1/2 bg-[#000000] pointer-events-auto"></div>
+        <div id="loader-bottom" class="absolute bottom-0 left-0 w-full h-1/2 bg-[#000000] pointer-events-auto"></div>
+
+        <svg id="flux-shape" width="100" height="100" viewBox="0 0 100 100" class="relative z-10 pointer-events-none">
+            <path id="flux-path"
+                d="M 50 10 C 90 10 90 10 90 50 C 90 90 90 90 50 90 C 10 90 10 90 10 50 C 10 10 10 10 50 10 Z"
+                style="fill: none; stroke: #007AFF; stroke-width: 2px; opacity: 0.8;"></path>
+        </svg>
+    </div>
+    <!-- Smoke Trail Canvas -->
+    <canvas id="smoke-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[9998]"></canvas>
+
+    <!-- Main Cursor Pointer -->
+    <div id="cursor"
+        class="fixed top-0 left-0 w-5 h-5 border border-white rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 mix-blend-difference transition-transform duration-300 ease-out">
+    </div>
+
+    <!-- Premium Animated Ambient Glow -->
+    <div id="bg-glow" class="fixed pointer-events-none z-0 mix-blend-screen" style="
+            top: 50%; left: 50%; width: 80vw; height: 80vw; border-radius: 50%; 
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, rgba(138, 43, 226, 0.08) 40%, transparent 70%); 
+            transform: translate(-50%, -50%); filter: blur(120px); 
+            animation: premium-glow-drift 20s infinite alternate ease-in-out;
+            will-change: transform, background;
+        ">
+    </div>
+    <style>
+        @keyframes premium-glow-drift {
+            0% {
+                transform: translate(-40%, -40%) scale(1);
+                background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, rgba(138, 43, 226, 0.08) 40%, transparent 70%);
+            }
+
+            50% {
+                transform: translate(-60%, -50%) scale(1.1);
+                background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(0, 122, 255, 0.08) 50%, transparent 70%);
+            }
+
+            100% {
+                transform: translate(-50%, -60%) scale(0.9);
+                background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, rgba(0, 122, 255, 0.08) 40%, transparent 70%);
+            }
+        }
+    </style>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-40 px-8 py-6 flex justify-between items-center mix-blend-difference">
+        <a href="#" class="text-xl font-bold tracking-tighter hover-link">ATUL.</a>
+        <div class="space-x-8 text-sm font-medium hidden md:block">
+            <a href="#work" class="hover-link transition-colors duration-300">Work</a>
+            <a href="#about" class="hover-link transition-colors duration-300">About</a>
+            <a href="#contact" class="hover-link text-accent transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <!-- SVG Chroma Key Filter for White Background Removal -->
+    <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <defs>
+            <filter id="remove-white-bg" color-interpolation-filters="sRGB">
+                <feColorMatrix type="matrix" values="
+                    1 0 0 0 0
+                    0 1 0 0 0
+                    0 1 0 0 0
+                    -20 -20 -20 0 58.5
+                " />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Hero Section (Canvas Animation) -->
+    <section id="hero" class="relative h-[450vh]">
+        <div class="sticky top-0 h-screen w-full overflow-hidden"
+            style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; justify-items: flex-start; z-index: 10;">
+
+            <!-- Hero Background Layer with Particles -->
+            <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                <div class="hero-particles">
+                    <div class="particle" style="width: 2px; height: 2px; top: 80%; left: 10%; animation-delay: 0s;">
+                    </div>
+                    <div class="particle" style="width: 3px; height: 3px; top: 60%; left: 30%; animation-delay: 2s;">
+                    </div>
+                    <div class="particle" style="width: 1px; height: 1px; top: 90%; left: 50%; animation-delay: 4s;">
+                    </div>
+                    <div class="particle" style="width: 4px; height: 4px; top: 70%; left: 70%; animation-delay: 1s;">
+                    </div>
+                    <div class="particle" style="width: 2px; height: 2px; top: 50%; left: 90%; animation-delay: 3s;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Absolute Image container for the avatar sequence -->
+            <div class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                id="image-container">
+                <!-- Smart Backlight -->
+                <div class="absolute w-[250px] h-[350px] bg-white rounded-[100px] blur-[30px] opacity-100"
+                    style="top: 20%; z-index: 0;"></div>
+                <canvas id="hero-canvas" class="w-full h-full object-contain relative z-10"
+                    style="filter: url(#remove-white-bg);"></canvas>
+            </div>
+
+            <!-- Foreground: Name Overlay (Luxury Layer) -->
+            <div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none overflow-hidden">
+
+            </div>
+
+            <!-- Left Column: Typewriter Intro -->
+            <div
+                class="z-30 px-8 md:px-16 lg:px-24 flex flex-col items-start w-full pointer-events-none mix-blend-difference">
+                <div
+                    class="text-white font-semibold text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight font-sans tracking-tight drop-shadow-2xl">
+                    <span class="block mb-4 min-h-[1.2em]"><span class="typewriter-line"
+                            data-text="Hello,"></span></span>
+                    <span class="block mb-4 min-h-[1.2em]"><span class="typewriter-line"
+                            data-text="Welcome to my portfolio."></span></span>
+                    <span class="block mb-4 min-h-[1.2em]">
+                        <span class="typewriter-line" data-text="I'm "></span><span class="typewriter-line text-accent"
+                            data-text="Atul."></span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Separate Right Column -->
+            <div
+                class="z-30 w-full h-full pointer-events-none flex flex-col items-end justify-center px-8 md:px-16 lg:px-24 mix-blend-difference">
+                <div class="text-white font-semibold text-right leading-tight font-sans tracking-tight drop-shadow-2xl">
+                    <span class="block min-h-[1.2em]"><span
+                            class="typewriter-line text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-gray-200"
+                            data-text="A Visual Systems Engineer."></span></span>
+                </div>
+            </div>
+
+            <!-- Avatar Status Button -->
+            <div
+                class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-40 pointer-events-auto mix-blend-difference">
+                <button id="how-created-btn" class="magnetic shadow-lg backdrop-blur-md bg-white/5 btn-shimmer"
+                    style="border: 1px solid rgba(255,255,255,0.5); padding: 12px 24px; font-size: 14px; font-weight: 600; letter-spacing: 0.1em; border-radius: 30px; color: #fff; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-transform: uppercase;">
+                    How was I created?
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- About Section (Interactive Bento) -->
+    <section id="about"
+        class="relative min-h-screen bg-black py-32 px-8 md:px-24 flex flex-col justify-center z-20 border-t border-white/5 overflow-hidden">
+        <div class="max-w-7xl mx-auto w-full">
+
+            <!-- Heading & Bio -->
+            <div class="mb-20">
+                <h2
+                    class="luxury-heading text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white max-w-4xl leading-tight mb-8">
+                    A Blend of Logic and Artistry.</h2>
+                <p class="text-lg md:text-xl max-w-3xl leading-relaxed font-light">
+                    <span class="text-white bio-fade inline-block">As a multidisciplinary creator, my journey weaves
+                        through code, design, and motion. I don't just build websites; </span>
+                    <span class="text-white/60 block overflow-hidden mt-1">
+                        <span class="bio-unfold block origin-top-left">I engineer experiences that feel alive, blending
+                            precise logic with high-end aesthetic artistry.</span>
+                    </span>
+                </p>
+            </div>
+
+            <!-- Bento Grid (2 Columns Since Creative Column Removed) -->
+            <div class="about-interactive-grid grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Column 1: Foundation (Credentials) -->
+                <div
+                    class="glass-card bento-item bg-white/5 backdrop-blur-xl rounded-3xl p-8 lg:p-10 border border-white/10 relative overflow-hidden group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div>
+                            <span
+                                class="text-accent text-xs uppercase tracking-widest font-semibold mb-4 block">Foundation</span>
+                            <h3 class="text-3xl font-bold text-white mb-2">BCA</h3>
+                            <p class="text-white/60 text-sm mb-6">Bachelor of Computer Applications <br> JIMS Rohini</p>
+
+                            <h3 class="text-3xl font-bold text-white mb-2">ITI COPA</h3>
+                            <p class="text-white/60 text-sm mb-6">Computer Operator & Programming Assistant</p>
+
+                            <h3 class="text-3xl font-bold text-white mb-2">SELF MADE</h3>
+                            <p class="text-white/60 text-sm">Video Editor and Graphic Designer </p>
+                        </div>
+                        <div class="mt-8 flex justify-end">
+                            <svg class="w-10 h-10 text-white/20 group-hover:text-accent transition-colors duration-300"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Creative (Stacked Video Previews) -->
+
+
+                <!-- Column 3: The Persona (Status) - Now links to Smart Attendance System -->
+                <div onclick="navigateWithScrollSave('project-smart-attendance.html')"
+                    class="glass-card bento-item bg-white/5 backdrop-blur-xl rounded-3xl p-8 lg:p-10 border border-white/10 relative overflow-hidden flex flex-col items-center justify-center text-center group cursor-pointer hover:border-[#00F0FF] transition-all duration-300">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-[#00F0FF]/5 to-black/0 z-0 group-hover:opacity-100 opacity-50 transition-opacity duration-500">
+                    </div>
+
+                    <div class="relative z-10">
+                        <div
+                            class="w-24 h-24 rounded-full border border-white/20 flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-transform duration-500 ease-out">
+                            <!-- Pulsing Dot -->
+                            <div class="w-6 h-6 rounded-full bg-accent relative">
+                                <div class="absolute inset-0 rounded-full bg-accent animate-ping opacity-75"></div>
+                            </div>
+                        </div>
+
+                        <span class="text-white/40 text-xs uppercase tracking-widest font-semibold mb-3 block">Smart
+                            Attendance System</span>
+                        <h3
+                            class="text-2xl lg:text-3xl font-bold text-white tracking-tight group-hover:text-[#00F0FF] transition-colors">
+                            Building the Future</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Skills Section -->
+    <section id="skills"
+        class="relative min-h-screen bg-black py-32 px-8 md:px-24 flex flex-col justify-center z-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="mb-20">
+                <h2 class="text-1xl md:text-2xl text-accent font-semibold tracking-widest uppercase mb-4 skill-stagger">
+                    What I Do</h2>
+                <h3
+                    class="text-5xl md:text-7xl font-bold tracking-tighter text-white max-w-3xl leading-tight skill-stagger">
+                    Crafting digital experiences through code and design.</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 w-full mt-12">
+                <!-- Web Development -->
+                <div
+                    class="glass-card rounded-3xl p-10 hover:bg-white/5 transition-colors duration-500 group skill-card">
+                    <div
+                        class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-8 group-hover:bg-accent transition-colors duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Frontend Development</h4>
+                    <p class="text-gray-400 leading-relaxed text-sm mb-6">Building performant and interactive user
+                        interfaces with modern web standards.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">HTML5</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">CSS3</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">JavaScript</span>
+                    </div>
+                </div>
+
+                <!-- Graphic Design -->
+                <div
+                    class="glass-card rounded-3xl p-10 hover:bg-white/5 transition-colors duration-500 group skill-card">
+                    <div
+                        class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-8 group-hover:bg-accent transition-colors duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Graphic Design</h4>
+                    <p class="text-gray-400 leading-relaxed text-sm mb-6">Creating visually compelling identities, brand
+                        assets, and aesthetic UI layouts.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">UI/UX</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">Branding</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">Typography</span>
+                    </div>
+                </div>
+
+                <!-- Video Editing -->
+                <div
+                    class="glass-card rounded-3xl p-10 hover:bg-white/5 transition-colors duration-500 group skill-card lg:col-span-1 md:col-span-2">
+                    <div
+                        class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-8 group-hover:bg-accent transition-colors duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Video Editing</h4>
+                    <p class="text-gray-400 leading-relaxed text-sm mb-6">Crafting cinematic motion sequences,
+                        post-production edits, and dynamic storytelling.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">Motion
+                            Graphics</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">Color
+                            Grading</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white">Premiere</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education & Growth Section -->
+    <section id="education" class="relative min-h-screen bg-black py-32 border-t border-white/5 overflow-hidden z-20">
+        <div class="max-w-6xl mx-auto px-4 md:px-8 w-full relative">
+            <div class="text-center mb-20 md:mb-32">
+                <h2 class="text-1xl md:text-2xl text-accent font-semibold tracking-widest uppercase mb-4 stagger-edu">
+                    Growth</h2>
+                <h3
+                    class="text-5xl md:text-7xl font-bold tracking-tighter text-white md:max-w-3xl mx-auto leading-tight stagger-edu">
+                    Education & Milestones.</h3>
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="relative w-full max-w-4xl mx-auto flex flex-col pt-10 pb-10">
+                <!-- Center Line Background -->
+                <div
+                    class="absolute inset-y-0 left-8 md:left-1/2 transform md:-translate-x-1/2 w-[2px] bg-white/10 z-0">
+                </div>
+                <!-- Animated Progress Line -->
+                <div id="timeline-progress"
+                    class="absolute top-0 left-8 md:left-1/2 transform md:-translate-x-1/2 w-[2px] bg-accent z-10 origin-top scale-y-0 h-full">
+                </div>
+
+                <!-- Milestone 1 (Present: AP Web World) -->
+                <div
+                    class="timeline-item flex flex-col md:flex-row justify-between items-start md:items-center w-full mb-32 relative z-20 pl-20 md:pl-0">
+                    <div class="md:w-[45%] flex justify-end md:pr-12 w-full order-2 md:order-1 mt-4 md:mt-0 relative">
+                        <div class="year-badge -top-10 -right-20">2024</div>
+                        <div
+                            class="glass-card p-8 rounded-3xl w-full border border-white/10 hover-link transition-all duration-300 hover:scale-[1.03] group milestone-card opacity-0">
+                            <span
+                                class="text-accent text-sm font-bold tracking-widest uppercase mb-3 block group-hover:drop-shadow-[0_0_8px_rgba(0,122,255,0.8)] transition-all duration-300">Present</span>
+                            <h4 class="text-3xl font-bold mb-4 text-white tracking-tight">Graphic Designer & Video
+                                Editor</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">Leading visual strategy and cinematic
+                                production at AP Web World Agency.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Agency</span>
+                                <span class="skill-tag">Direction</span>
+                                <span class="skill-tag">Editing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Center Icon -->
+                    <div
+                        class="absolute left-8 md:left-1/2 transform -translate-x-1/2 mt-2 md:mt-0 milestone-icon timeline-dot scale-0 order-1 md:order-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                    </div>
+                    <div class="md:w-[45%] order-3 hidden md:block"></div>
+                </div>
+
+                <!-- Milestone 2 (Aura Circle Agency) -->
+                <div
+                    class="timeline-item flex flex-col md:flex-row justify-between items-start md:items-center w-full mb-32 relative z-20 pl-20 md:pl-0">
+                    <div class="md:w-[45%] order-3 md:order-1 hidden md:block"></div>
+                    <!-- Center Icon -->
+                    <div
+                        class="absolute left-8 md:left-1/2 transform -translate-x-1/2 mt-2 md:mt-0 milestone-icon timeline-dot scale-0 order-1 md:order-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                            </path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="md:w-[45%] md:pl-12 w-full order-2 md:order-3 mt-4 md:mt-0 relative">
+                        <div class="year-badge -top-10 -left-20">2023</div>
+                        <div
+                            class="glass-card p-8 rounded-3xl w-full border border-white/10 hover-link transition-all duration-300 hover:scale-[1.03] group milestone-card opacity-0">
+                            <span
+                                class="text-accent text-sm font-bold tracking-widest uppercase mb-3 block group-hover:drop-shadow-[0_0_8px_rgba(0,122,255,0.8)] transition-all duration-300">Experience</span>
+                            <h4 class="text-3xl font-bold mb-4 text-white tracking-tight">Graphic Designer</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">Collaborating with Aura Circle Agency
+                                on high-fidelity brand identities.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Branding</span>
+                                <span class="skill-tag">Design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Milestone 3 (BCA) -->
+                <div
+                    class="timeline-item flex flex-col md:flex-row justify-between items-start md:items-center w-full mb-32 relative z-20 pl-20 md:pl-0">
+                    <div class="md:w-[45%] flex justify-end md:pr-12 w-full order-2 md:order-1 mt-4 md:mt-0 relative">
+                        <div class="year-badge -top-10 -right-20">2022</div>
+                        <div
+                            class="glass-card p-8 rounded-3xl w-full border border-white/10 hover-link transition-all duration-300 hover:scale-[1.03] group milestone-card opacity-0">
+                            <span
+                                class="text-accent text-sm font-bold tracking-widest uppercase mb-3 block group-hover:drop-shadow-[0_0_8px_rgba(0,122,255,0.8)] transition-all duration-300">Pursuing</span>
+                            <h4 class="text-3xl font-bold mb-4 text-white tracking-tight">Bachelor of Computer
+                                Applications</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">Developing a strong foundation in
+                                software engineering at JIMS Rohini.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">CS</span>
+                                <span class="skill-tag">Development</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Center Icon -->
+                    <div
+                        class="absolute left-8 md:left-1/2 transform -translate-x-1/2 mt-2 md:mt-0 milestone-icon timeline-dot scale-0 order-1 md:order-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                    </div>
+                    <div class="md:w-[45%] order-3 hidden md:block"></div>
+                </div>
+
+                <!-- Milestone 4 (Diploma) -->
+                <div
+                    class="timeline-item flex flex-col md:flex-row justify-between items-start md:items-center w-full mb-32 relative z-20 pl-20 md:pl-0">
+                    <div class="md:w-[45%] order-3 md:order-1 hidden md:block"></div>
+                    <!-- Center Icon -->
+                    <div
+                        class="absolute left-8 md:left-1/2 transform -translate-x-1/2 mt-2 md:mt-0 milestone-icon timeline-dot scale-0 order-1 md:order-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 17h16M4 21h16M7 11l5 5 5-5M12 4v12"></path>
+                        </svg>
+                    </div>
+                    <div class="md:w-[45%] md:pl-12 w-full order-2 md:order-3 mt-4 md:mt-0 relative">
+                        <div class="year-badge -top-10 -left-20">2021</div>
+                        <div
+                            class="glass-card p-8 rounded-3xl w-full border border-white/10 hover-link transition-all duration-300 hover:scale-[1.03] group milestone-card opacity-0">
+                            <span
+                                class="text-accent text-sm font-bold tracking-widest uppercase mb-3 block group-hover:drop-shadow-[0_0_8px_rgba(0,122,255,0.8)] transition-all duration-300">Diploma</span>
+                            <h4 class="text-3xl font-bold mb-4 text-white tracking-tight">Diploma in COPA</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">Expertise in Computer Operating and
+                                Programming Assistance.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Tech</span>
+                                <span class="skill-tag">Certification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Milestone 5 (Schooling) -->
+                <div
+                    class="timeline-item flex flex-col md:flex-row justify-between items-start md:items-center w-full relative z-20 pl-20 md:pl-0">
+                    <div class="md:w-[45%] flex justify-end md:pr-12 w-full order-2 md:order-1 mt-4 md:mt-0 relative">
+                        <div class="year-badge -top-10 -right-20">2019</div>
+                        <div
+                            class="glass-card p-8 rounded-3xl w-full border border-white/10 hover-link transition-all duration-300 hover:scale-[1.03] group milestone-card opacity-0">
+                            <span
+                                class="text-accent text-sm font-bold tracking-widest uppercase mb-3 block group-hover:drop-shadow-[0_0_8px_rgba(0,122,255,0.8)] transition-all duration-300">Foundation</span>
+                            <h4 class="text-3xl font-bold mb-4 text-white tracking-tight">St Francis De Sales School
+                            </h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">Completed academic foundations in
+                                Janakpuri with honors.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Academic</span>
+                                <span class="skill-tag">Roots</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Center Icon -->
+                    <div
+                        class="absolute left-8 md:left-1/2 transform -translate-x-1/2 mt-2 md:mt-0 milestone-icon timeline-dot scale-0 order-1 md:order-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="md:w-[45%] order-3 hidden md:block"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hobbies & Passions Section (Integrated - Dark Mode) -->
+    <section id="hobbies-portfolio"
+        class="relative min-h-screen bg-black py-32 px-8 md:px-24 flex flex-col justify-center z-10 border-t border-white/5 overflow-hidden text-white">
+        <div class="max-w-7xl mx-auto w-full">
+            <!-- Header -->
+            <header class="mb-16">
+                <h2 class="text-xs uppercase tracking-[0.4em] font-semibold text-accent mb-2">Portfolio</h2>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter text-white">MY HOBBIES</h1>
+            </header>
+
+            <div class="hobbies-grid grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+                <!-- Left Column: Interactive List -->
+                <ul class="hobby-list lg:col-span-7 space-y-4">
+                    <li class="hobby-item group cursor-pointer" data-hobby="photography">
+                        <div class="hobby-text-container relative inline-block" data-text="Photography">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Photography</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                    <li class="hobby-item group cursor-pointer" data-hobby="coding">
+                        <div class="hobby-text-container relative inline-block" data-text="Coding">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Coding</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                    <li class="hobby-item group cursor-pointer" data-hobby="travel">
+                        <div class="hobby-text-container relative inline-block" data-text="Travel">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Travel</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                    <li class="hobby-item group cursor-pointer" data-hobby="music">
+                        <div class="hobby-text-container relative inline-block" data-text="Music Production">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Music Production</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                    <li class="hobby-item group cursor-pointer" data-hobby="videoediting">
+                        <div class="hobby-text-container relative inline-block" data-text="Video Editing">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Video Editing</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                    <li class="hobby-item group cursor-pointer" data-hobby="graphicdesigning">
+                        <div class="hobby-text-container relative inline-block" data-text="Graphic Designing">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Graphic Designing</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                    <li class="hobby-item group cursor-pointer" data-hobby="cooking">
+                        <div class="hobby-text-container relative inline-block" data-text="Cooking">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Cooking</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                    <li class="hobby-item group cursor-pointer" data-hobby="football">
+                        <div class="hobby-text-container relative inline-block" data-text="Playing Football">
+                            <span class="hobby-name relative z-10 transition-all duration-500">Playing Football</span>
+                            <span
+                                class="hobby-arrow opacity-0 group-hover:opacity-100 transition-all duration-300 ml-4">&rarr;</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Right Column: Description Card -->
+                <div class="description-column lg:col-span-12 xl:col-span-5 flex flex-col gap-12">
+                    <div id="description-card"
+                        class="glass-card bg-white/5 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl relative">
+                        <!-- Abstract Visual Placeholder -->
+                        <div id="hobby-visual" class="hobby-visual-container opacity-10">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                class="w-full h-full text-accent">
+                                <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="0.5"
+                                    stroke-dasharray="4 4" />
+                                <rect x="60" y="60" width="80" height="80" stroke="currentColor" stroke-width="0.5"
+                                    transform="rotate(45 100 100)" />
+                            </svg>
+                        </div>
+
+                        <div id="card-content" class="relative z-10">
+                            <p class="text-xs uppercase tracking-widest font-bold text-accent mb-6">Focus / 01</p>
+                            <h3 id="hobby-title" class="text-3xl font-bold mb-4 text-white">Capturing Moments</h3>
+                            <p id="hobby-description" class="text-white/60 leading-relaxed text-lg mb-8">
+                                Freezing time through the lens. My photography is about finding the extraordinary in the
+                                ordinary, chasing light and composition to tell a story without words.
+                            </p>
+                            <div id="hobby-snippet-container">
+                                <pre id="hobby-snippet"
+                                    class="hidden font-mono text-sm p-4 bg-black/40 rounded-xl overflow-x-auto text-accent border border-accent/20">
+// capturing the golden hour
+const frame = lens.focus();
+frame.capture();
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accent Button -->
+                    <div class="flex items-center gap-6 group cursor-pointer">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section (Horizontal Scroll) -->
+    <section id="work" class="relative h-[400vh] bg-transparent">
+        <div class="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-24">
+            <div class="px-8 md:px-24 absolute top-24 left-0 z-10 w-full flex justify-between items-end">
+                <h2 class="text-5xl md:text-7xl font-bold tracking-tighter">Selected<br /><span
+                        class="text-gray-500">Work</span></h2>
+                <div class="hidden md:flex gap-2 items-center text-gray-500 pb-2">
+                    <span class="w-16 h-[1px] bg-gray-500 block"></span>
+                    <span class="text-sm uppercase tracking-widest">Scroll to explore</span>
+                </div>
+            </div>
+
+            <div id="projects-container" class="flex gap-8 md:gap-16 px-8 md:px-24 mt-32 w-max">
+
+                <!-- Project 1 -->
+                <div onclick="navigateWithScrollSave('project-food-joint.html')"
+                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    <!-- Background Placeholder / Image will go here if added later -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-[#0a0a0a] to-[#151515] z-0 transition-transform duration-700 group-hover:scale-105">
+                    </div>
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
+
+                    <div
+                        class="relative z-20 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                        <span class="text-accent text-xs uppercase tracking-widest font-semibold mb-3 block">Web
+                            App</span>
+                        <h3 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Food Joint Management System</h3>
+                        <p
+                            class="text-gray-400 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 text-sm md:text-base leading-relaxed">
+                            A comprehensive dashboard for managing restaurant orders, inventory, and staff with
+                            real-time analytics and POS integration.</p>
+
+                        <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">React</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">Tailwind</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300">Node.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div onclick="navigateWithScrollSave('project-college.html')"
+                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-[#050505] to-[#1a1a1a] z-0 transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
+
+                    <div
+                        class="relative z-20 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                        <span class="text-accent text-xs uppercase tracking-widest font-semibold mb-3 block">Portfolio
+                            Experience</span>
+                        <h3 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Fitgrit Tribe Gym</h3>
+                        <p
+                            class="text-gray-400 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 text-sm md:text-base leading-relaxed">
+                            Immersive, spatial shopping experience with 3D product configurators and seamless checkout
+                            flow.</p>
+
+                        <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">Three.js</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">Next.js</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300">Stripe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div onclick="navigateWithScrollSave('project-ap-web-world.html')"
+                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-[#111] to-[#000] z-0 transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
+
+                    <div
+                        class="relative z-20 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                        <span
+                            class="text-accent text-xs uppercase tracking-widest font-semibold mb-3 block">Portfolio</span>
+                        <h3 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">AP Web World</h3>
+                        <p
+                            class="text-gray-400 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 text-sm md:text-base leading-relaxed">
+                            Minimalist, award-winning marketing website for a leading design agency with
+                            high-performance animations.</p>
+
+                        <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">GSAP</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">HTML5</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300">CSS3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div onclick="navigateWithScrollSave('project-aura-circle.html')"
+                    class="w-[85vw] md:w-[60vw] lg:w-[45vw] h-[60vh] flex-shrink-0 glass-card rounded-3xl p-8 flex flex-col justify-end group relative overflow-hidden cursor-pointer hover-link block">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-[#111] to-[#000] z-0 transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
+
+                    <div
+                        class="relative z-20 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                        <span
+                            class="text-accent text-xs uppercase tracking-widest font-semibold mb-3 block">Portfolio</span>
+                        <h3 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Aura Circle Agency</h3>
+                        <p
+                            class="text-gray-400 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 text-sm md:text-base leading-relaxed">
+                            Minimalist, award-winning marketing website for a leading design agency with
+                            high-performance animations.
+                        </p>
+
+                        <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">GSAP</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300 mr-2">HTML5</span>
+                            <span
+                                class="inline-block py-1 px-3 border border-white/20 rounded-full text-xs text-gray-300">CSS3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy & Methodology Section -->
+    <section id="philosophy"
+        class="relative min-h-screen bg-transparent py-32 flex flex-col justify-center items-center z-10 border-t border-white/5 overflow-hidden">
+        <!-- Massive Exaggerated Background Numeral -->
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[45vw] font-black opacity-[0.02] pointer-events-none select-none leading-none w-full text-center">
+            01
+        </div>
+
+        <div class="max-w-7xl mx-auto px-8 w-full relative z-20">
+            <h2 class="text-2xl md:text-3xl text-accent font-semibold tracking-widest uppercase mb-6 stagger-phil">
+                Engineering with Intent.</h2>
+
+            <!-- Kinetic Typography Statement -->
+            <div class="mb-24 h-full flex items-center">
+                <p id="kinetic-text"
+                    class="text-4xl md:text-6xl font-normal leading-tight md:leading-snug tracking-tight text-white max-w-5xl">
+                    I bridge the gap between complex logic and human-centric design.
+                </p>
+            </div>
+
+            <!-- Methodology Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full stagger-phil">
+                <!-- Concept -->
+                <div
+                    class="glass-card p-10 rounded-3xl border border-white/10 relative group overflow-hidden transition-all duration-500 hover:-translate-y-2">
+                    <div
+                        class="absolute inset-x-0 bottom-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl">
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 relative z-10">Concept</h3>
+                    <p
+                        class="text-gray-400 opacity-80 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
+                        Strategic ideation prioritizing human-centered user experiences and architectural scalability.
+                    </p>
+                </div>
+                <!-- Code -->
+                <div
+                    class="glass-card p-10 rounded-3xl border border-white/10 relative group overflow-hidden transition-all duration-500 hover:-translate-y-2">
+                    <div
+                        class="absolute inset-x-0 bottom-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl">
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 relative z-10">Code</h3>
+                    <p
+                        class="text-gray-400 opacity-80 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
+                        Writing clean, modular, and performant logic leveraging modern web technologies.</p>
+                </div>
+                <!-- Deploy -->
+                <div
+                    class="glass-card p-10 rounded-3xl border border-white/10 relative group overflow-hidden transition-all duration-500 hover:-translate-y-2">
+                    <div
+                        class="absolute inset-x-0 bottom-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl">
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 relative z-10">Deploy</h3>
+                    <p
+                        class="text-gray-400 opacity-80 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
+                        Optimizing delivery pipelines to ensure lightning-fast, secure, and reliable production builds.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Thank You Footer -->
+    <footer id="contact"
+        class="relative min-h-screen flex flex-col items-center justify-center bg-transparent border-t border-white/5 overflow-hidden z-20">
+
+        <!-- Premium Animated Thank You Section (Integrated & Ethereal) -->
+        <div id="footer-thank-you"
+            class="absolute bottom-10 left-0 w-full z-[1] pointer-events-none flex justify-center items-end select-none overflow-hidden pb-10 opacity-30">
+            <div class="thank-you-container flex gap-[0.1em] pointer-events-auto cursor-none">
+                <!-- Letters injected via JS -->
+                <h1 class="text-[10vw] md:text-[8vw] font-black tracking-tighter uppercase leading-none luxury-typo-ethereal text-glow-ethereal"
+                    style="font-family: 'Syne', sans-serif;">
+                    THANK YOU
+                </h1>
+            </div>
+        </div>
+
+        <script>
+            // ----------------------------------------------------------------
+            // 7. Cinematic Footer Animations & Interactions
+            // ----------------------------------------------------------------
+
+            // Premium Ethereal Wave Reveal
+            const thankYouText = document.querySelector("#footer-thank-you h1");
+            if (thankYouText) {
+                const text = thankYouText.innerText;
+                thankYouText.innerHTML = text.split('').map(char =>
+                    char === ' ' ? '<span class="mr-[0.4em]"></span>' : `<span class="thank-you-letter-ethereal inline-block">${char}</span>`
+                ).join('');
+
+                const letters = thankYouText.querySelectorAll(".thank-you-letter-ethereal");
+
+                // Initial Entry Reveal (Soft & Blurred)
+                gsap.fromTo(letters,
+                    {
+                        y: 50,
+                        scale: 0.8,
+                        filter: "blur(20px)",
+                        opacity: 0
+                    },
+                    {
+                        y: 0,
+                        scale: 1,
+                        filter: "blur(4px)", // Maintaining a slight permanent blur for 'ethereal' look
+                        opacity: 1,
+                        stagger: {
+                            each: 0.05,
+                            from: "random"
+                        },
+                        duration: 2,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: "#contact",
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+
+                // Continuous Ethereal Drift
+                letters.forEach((letter, i) => {
+                    gsap.to(letter, {
+                        x: "random(-10, 10)",
+                        y: "random(-15, 15)",
+                        rotation: "random(-5, 5)",
+                        duration: "random(3, 5)",
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut",
+                        delay: i * 0.2
+                    });
+
+                    // Interactive Hover Effect (Focuses the blur)
+                    letter.parentElement.parentElement.addEventListener('mousemove', (e) => {
+                        const rect = letter.getBoundingClientRect();
+                        const dx = e.clientX - rect.left - rect.width / 2;
+                        const dy = e.clientY - rect.top - rect.height / 2;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 200) {
+                            gsap.to(letter, {
+                                filter: `blur(${Math.max(0, 4 * (dist / 200))}px)`,
+                                scale: 1.1 * (1 - dist / 200) + 1,
+                                opacity: 1,
+                                duration: 0.5
+                            });
+                        } else {
+                            gsap.to(letter, {
+                                filter: "blur(4px)",
+                                scale: 1,
+                                opacity: 1,
+                                duration: 1
+                            });
+                        }
+                    });
+                });
+            }
+
+            // Parallax background drift
+            gsap.to("#footer-thank-you", {
+                y: -150,
+                scrollTrigger: {
+                    trigger: "#contact",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 2
+                }
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <style>
+            .luxury-typo-ethereal {
+                color: rgba(255, 255, 255, 0.1);
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+                position: relative;
+                display: flex;
+                gap: 0.1em;
+            }
+
+            .text-glow-ethereal {
+                filter: blur(4px);
+                animation: ethereal-pulse 10s infinite alternate ease-in-out;
+            }
+
+            @keyframes ethereal-pulse {
+                0% {
+                    filter: blur(4px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+                }
+
+                50% {
+                    filter: blur(6px) drop-shadow(0 0 30px rgba(0, 122, 255, 0.2));
+                }
+
+                100% {
+                    filter: blur(3px) drop-shadow(0 0 20px rgba(138, 43, 226, 0.1));
+                }
+            }
+
+            .thank-you-letter-ethereal {
+                display: inline-block;
+                will-change: transform, filter, opacity;
+            }
+        </style>
+
+        <div
+            class="footer-content-grid flex items-center justify-between w-[90%] max-w-[1200px] mx-auto h-full relative z-10">
+
+            <!-- Left Column (Text & Links) -->
+            <div class="footer-left-col flex flex-col items-start text-left gap-[40px]">
+                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tighter">Ready to elevate<br />your digital
+                    presence?</h2>
+
+                <!-- Primary Magnetic Download Button -->
+                <div class="pointer-events-auto">
+                    <a href="ATULRESUME2.pdf" id="magnetic-cv" target="_blank"
+                        class="magnetic btn-shimmer inline-flex items-center justify-center px-10 py-5 bg-accent text-white rounded-full font-bold uppercase tracking-widest text-sm hover-link transition-transform hover:shadow-[0_0_30px_rgba(0,122,255,0.4)] relative">
+                        Download CV
+                    </a>
+                </div>
+
+                <!-- Staggered Social Links -->
+                <div class="flex gap-[20px] text-sm uppercase tracking-widest font-semibold mix-blend-difference">
+                    <a href="#" id="email-copy-link"
+                        class="stagger-social hover-link relative group transition-colors hover:text-white">
+                        <span id="email-text" class="inline-block relative z-10">Email</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/atul-xalxo-b41387123/" target="_blank"
+                        class="stagger-social hover-link relative group transition-colors hover:text-white">
+                        <span class="inline-block relative z-10">LinkedIn</span>
+                    </a>
+                    <a href="404.html" target="_blank"
+                        class="stagger-social hover-link relative group transition-colors hover:text-white">
+                        <span class="inline-block relative z-10">GitHub</span>
+                    </a>
+                    <a href="#" class="stagger-social hover-link relative group transition-colors hover:text-white">
+                        <span class="inline-block relative z-10">Twitter</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column (Avatar Video) -->
+            <div
+                class="footer-right-col w-[45%] flex justify-center items-center pointer-events-none relative h-[400px]">
+                <!-- The transparent avatar video properly blended -->
+                <video src="Atul_byebye.mp4" id="finale-avatar" autoplay loop muted playsinline
+                    class="w-full max-w-md object-contain opacity-0 transform translate-y-10 rounded-2xl mix-blend-screen"
+                    style="filter: brightness(1.1) contrast(1.1);"></video>
+            </div>
+
+        </div>
+
+        <!-- Back to Top & Copyright -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
+            <a href="#about"
+                class="magnetic group flex items-center gap-4 py-4 px-8 bg-white/5 backdrop-blur-md border border-white/10 rounded-full hover:bg-white/10 transition-all btn-shimmer">
+                <span class="text-sm font-bold uppercase tracking-widest">Explore Portfolio</span>
+            </a>
+        </div>
+
+        <p
+            class="text-[10px] md:text-xs text-gray-600 uppercase tracking-widest font-medium absolute bottom-10 left-8 z-20">
+            &copy; 2026 Crafted
+            with Passion by Atul</p>
+
+        <button id="back-to-top"
+            class="absolute bottom-10 right-8 w-14 h-14 rounded-full border border-white/20 flex items-center justify-center hover-link transition-all duration-300 group hover:bg-black/50 backdrop-blur-sm z-20 pointer-events-auto">
+            <svg class="w-6 h-6 text-white group-hover:text-accent transition-colors duration-300 transform group-hover:-translate-y-1"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18">
+                </path>
+            </svg>
+        </button>
+        </div>
+
+    </footer>
+
+    <!-- Avatar Creation Modal -->
+    <div id="avatar-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none px-4"
+        style="backdrop-filter: blur(10px);">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop"></div>
+        <button
+            class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors close-modal z-20 cursor-pointer">
+            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <div class="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
+            <h3
+                class="text-3xl md:text-4xl font-bold mb-12 text-white tracking-tight modal-header transform translate-y-10 opacity-0">
+                My 3D Creation Process</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+                <!-- Step 1 -->
+                <div class="process-card bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl transform translate-y-20 opacity-0"
+                    style="box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);">
+                    <div class="text-accent text-sm font-bold tracking-widest uppercase mb-4">Step 1: AI Vision</div>
+                    <p class="text-white/80 leading-relaxed text-sm md:text-base">Original Photo to Gemini AI Avatar.
+                    </p>
+                </div>
+                <!-- Step 2 -->
+                <div class="process-card bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl transform translate-y-20 opacity-0"
+                    style="box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);">
+                    <div class="text-accent text-sm font-bold tracking-widest uppercase mb-4">Step 2: Motion</div>
+                    <p class="text-white/80 leading-relaxed text-sm md:text-base">Google Flow: Animating the 3D depth
+                        (4-sec loop).</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="process-card bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl transform translate-y-20 opacity-0"
+                    style="box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);">
+                    <div class="text-accent text-sm font-bold tracking-widest uppercase mb-4">Step 3: Sequential
+                        Processing</div>
+                    <p class="text-white/80 leading-relaxed text-sm md:text-base">Frame Extraction: Converting video to
+                        300 ultra-high-def frames.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="process-card bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl transform translate-y-20 opacity-0"
+                    style="box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);">
+                    <div class="text-accent text-sm font-bold tracking-widest uppercase mb-4">Step 4: Integration</div>
+                    <p class="text-white/80 leading-relaxed text-sm md:text-base">GSAP ScrollTrigger: Mapping frames to
+                        page scroll for 3D interaction.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

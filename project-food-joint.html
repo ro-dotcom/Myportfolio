@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atul | Food Joint Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        black: '#050505',
+                        white: '#FFFFFF',
+                        accent: '#007AFF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-black text-white font-sans antialiased overflow-x-hidden cursor-none">
+
+    <!-- Custom Cursor -->
+    <div id="cursor"
+        class="fixed top-0 left-0 w-5 h-5 rounded-full bg-white pointer-events-none z-50 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out mix-blend-difference hidden md:block">
+    </div>
+    
+    <!-- Background Glow -->
+    <div id="bg-glow"
+        class="fixed top-0 left-0 w-[40vw] h-[40vw] rounded-full bg-accent opacity-50 blur-[100px] pointer-events-none z-50 mix-blend-screen">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference">
+        <a href="index.html#work" class="inline-block text-xl md:text-2xl font-black tracking-tighter uppercase relative z-[200] cursor-pointer hover:scale-105 transition-transform">
+            Back <span class="text-accent">.</span>
+        </a>
+    </nav>
+
+    <main class="relative z-10 pt-32 pb-20 px-6 max-w-5xl mx-auto">
+        
+        <!-- Header -->
+        <header class="mb-20 text-center md:text-left">
+            <span class="text-accent text-sm md:text-base font-bold tracking-widest uppercase mb-4 block">Web App</span>
+            <h1 class="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-6 leading-none">
+                Food Joint <br/>
+                <span class="text-transparent" style="-webkit-text-stroke: 2px rgba(255, 255, 255, 1);">Management</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl leading-relaxed">
+                A comprehensive dashboard for managing restaurant orders, inventory, and staff with real-time analytics and POS integration.
+            </p>
+        </header>
+
+        <!-- Large Hero Asset Placeholder -->
+        <section class="mb-24">
+            <div class="glass-card aspect-video w-full rounded-3xl border border-white/10 overflow-hidden relative group">
+                <div class="absolute inset-0 bg-gradient-to-tr from-[#0a0a0a] to-[#151515] transition-transform duration-700 group-hover:scale-105"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-4xl md:text-6xl font-black text-white/5 uppercase tracking-widest">Dashboard Preview</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Description Details -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="md:col-span-2 space-y-6 text-gray-400 leading-relaxed">
+                <h2 class="text-2xl font-bold mb-4 uppercase tracking-widest text-white">Project Overview</h2>
+                <p>This full-stack application was built to solve the complex logistical challenges faced by modern fast-paced restaurant environments. By integrating POS capabilities alongside direct inventory tracking, the system ensures fewer stock-outs and highly optimized order routing to the kitchen.</p>
+                <p>Real-time analytics provide store managers with an immediate pulse on daily revenue, peak operating hours, and popular menu items, empowering robust data-driven decisions that translate to higher margins.</p>
+            </div>
+            
+            <div class="space-y-8 pl-0 md:pl-8 md:border-l border-white/10">
+                <div>
+                    <h3 class="text-sm font-bold tracking-widest uppercase text-white mb-2">Technologies</h3>
+                    <ul class="text-gray-400 space-y-2">
+                        <li>React</li>
+                        <li>Node.js</li>
+                        <li>Tailwind CSS</li>
+                        <li>Express / MongoDB</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold tracking-widest uppercase text-white mb-2">Role</h3>
+                    <p class="text-gray-400">Full Stack Developer</p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold tracking-widest uppercase text-white mb-2">Year</h3>
+                    <p class="text-gray-400">2023</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cursor = document.getElementById("cursor");
+            const bgGlow = document.getElementById("bg-glow");
+            
+            gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+            gsap.set(bgGlow, { xPercent: -50, yPercent: -50 });
+            
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = mouseX;
+            let cursorY = mouseY;
+            
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            gsap.ticker.add(() => {
+                const dt = 1.0 - Math.pow(1.0 - 0.2, gsap.ticker.deltaRatio());
+                cursorX += (mouseX - cursorX) * dt;
+                cursorY += (mouseY - cursorY) * dt;
+                gsap.set(cursor, { x: cursorX, y: cursorY });
+            });
+            
+            gsap.to(bgGlow, {
+                x: () => mouseX,
+                y: () => mouseY,
+                duration: 1.5,
+                ease: "power2.out",
+                overwrite: "auto",
+            });
+            
+            window.addEventListener('mousemove', () => {
+                gsap.to(bgGlow, { x: mouseX, y: mouseY, duration: 1.5, ease: "power2.out", overwrite: "auto" });
+            });
+            
+            const magneticBtns = document.querySelectorAll('.magnetic');
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    gsap.to(cursor, { scale: 2.5, backgroundColor: "transparent", border: "1px solid white", duration: 0.3 });
+                });
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(cursor, { scale: 1, backgroundColor: "white", border: "none", duration: 0.3 });
+                    gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: "power3.out" });
+                });
+                
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
+                    const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
+                    gsap.to(btn, { x: x, y: y, duration: 0.6, ease: "power3.out" });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

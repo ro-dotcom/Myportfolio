@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance | RFID-Based Automated System</title>
+    <meta name="description"
+        content="Next-gen RFID-based automated attendance system with real-time tracking and secure data automation.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-dark: #050508;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --accent-blue: #00f2ff;
+            --accent-purple: #7000ff;
+            --accent-orange: #ff9d00;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-glow: 0 0 20px rgba(0, 242, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent-blue), var(--accent-purple));
+            border-radius: 10px;
+        }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            background: linear-gradient(to bottom, rgba(5, 5, 8, 0.8), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--accent-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .cta-btn {
+            background: white;
+            color: black;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid white;
+        }
+
+        .cta-btn:hover {
+            background: transparent;
+            color: white;
+            box-shadow: var(--neon-glow);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+            overflow: hidden;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        /* --- Common Section Styles --- */
+        section {
+            padding: 10rem 10%;
+            position: relative;
+        }
+
+        .section-tag {
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            max-width: 700px;
+        }
+
+        /* --- About & How It Works --- */
+        .glass-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .visual-container {
+            position: relative;
+            height: 500px;
+            background: var(--bg-card);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .scanning-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-blue);
+            box-shadow: 0 0 20px var(--accent-blue);
+            top: 0;
+            animation: scan 3s infinite linear;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* --- Features Grid --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(0, 242, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-blue);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            color: var(--accent-blue);
+        }
+
+        /* --- Visual Workflow --- */
+        .workflow-section {
+            padding: 8rem 5%;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 4rem;
+            position: relative;
+            margin-top: 5rem;
+        }
+
+        @media (min-width: 968px) {
+            .workflow-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        .workflow-track {
+            position: absolute;
+            top: 50px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+            display: none;
+        }
+
+        @media (min-width: 968px) {
+            .workflow-track { display: block; }
+        }
+
+        .workflow-particle {
+            position: absolute;
+            top: -4px;
+            left: 12.5%;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent-blue), 0 0 40px var(--accent-purple);
+            z-index: 2;
+        }
+
+        .workflow-node {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .node-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .node-icon-wrapper i {
+            width: 40px;
+            height: 40px;
+            color: var(--text-dim);
+            transition: color 0.5s ease;
+        }
+
+        .workflow-node.active .node-icon-wrapper {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2) inset, 0 10px 30px rgba(0,0,0,0.5);
+            transform: scale(1.1);
+        }
+
+        .workflow-node.active .node-icon-wrapper i {
+            color: var(--accent-blue);
+        }
+
+        .workflow-node h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+            transition: color 0.5s ease;
+        }
+
+        .workflow-node.active h3 {
+            color: white;
+        }
+
+        .workflow-node p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            max-width: 200px;
+            margin-inline: auto;
+        }
+
+        /* --- Crazy Journey Section --- */
+        .crazy-journey {
+            height: 400vh;
+            position: relative;
+            background: #020204;
+        }
+
+        .journey-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .journey-bg-glow {
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 60%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            filter: blur(50px);
+            pointer-events: none;
+        }
+
+        .journey-visuals {
+            position: absolute;
+            left: 5%;
+            width: 45%;
+            height: 60vh;
+            perspective: 1500px;
+            z-index: 2;
+        }
+
+        .jv-step {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateZ(-200px) scale(0.8);
+        }
+
+        .journey-content-wrapper {
+            position: absolute;
+            right: 5%;
+            width: 45%;
+            height: 60vh;
+            z-index: 2;
+        }
+
+        .jc-step {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            width: 100%;
+        }
+
+        .jc-time {
+            display: inline-block;
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+        }
+
+        .jc-step h2 {
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, var(--text-dim));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .jc-step p {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-dim);
+            max-width: 500px;
+        }
+
+        /* --- Custom CSS 3D Graphics --- */
+        .hologram-card {
+            width: 250px; height: 350px;
+            background: rgba(0, 242, 255, 0.05);
+            border: 2px solid rgba(0, 242, 255, 0.5);
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.2), inset 0 0 30px rgba(0, 242, 255, 0.2);
+            position: relative; overflow: hidden;
+            transform: rotateY(-15deg) rotateX(10deg);
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .hologram-card i {
+            width: 100px; height: 100px;
+            color: var(--accent-blue);
+            filter: drop-shadow(0 0 10px var(--accent-blue));
+        }
+
+        .scan-laser {
+            position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: #fff; box-shadow: 0 0 20px 5px var(--accent-blue);
+            animation: laserScan 2s linear infinite;
+        }
+
+        @keyframes laserScan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateY(-15deg) rotateX(10deg); }
+            50% { transform: translateY(-20px) rotateY(-5deg) rotateX(15deg); }
+        }
+
+        .data-cylinders {
+            display: flex; gap: 20px;
+            transform: rotateX(20deg) rotateY(-20deg);
+            transform-style: preserve-3d;
+        }
+
+        .cylinder {
+            width: 80px; height: 200px;
+            background: linear-gradient(90deg, rgba(112,0,255,0.1), rgba(112,0,255,0.4), rgba(112,0,255,0.1));
+            border: 1px solid var(--accent-purple);
+            border-radius: 40px / 15px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(112,0,255,0.3);
+            animation: pulse-cyl 2s infinite alternate;
+        }
+
+        .cylinder::before {
+            content: ''; position: absolute; top: -1px; left: -1px;
+            width: 100%; height: 30px;
+            border: 1px solid var(--accent-purple);
+            border-radius: 50%;
+            background: rgba(112,0,255,0.2);
+        }
+
+        .cylinder.c2 { height: 250px; animation-delay: 0.5s; }
+        .cylinder.c3 { height: 150px; animation-delay: 1s; }
+
+        @keyframes pulse-cyl {
+            to { box-shadow: 0 0 60px rgba(112,0,255,0.6); filter: brightness(1.5); }
+        }
+
+        .smartphone-hologram {
+            width: 200px; height: 400px;
+            border-radius: 30px; border: 4px solid #fff;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            position: relative;
+            transform: rotateY(15deg) rotateZ(5deg);
+            box-shadow: 0 0 40px rgba(255,255,255,0.2);
+            display: flex; justify-content: center;
+        }
+
+        .sms-bubble {
+            position: absolute; top: 20%; width: 160%; left: -30%;
+            background: rgba(0, 242, 255, 0.9); padding: 1.5rem;
+            border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            color: #000;
+        }
+
+        .sms-bubble span {
+            display: flex; align-items: center; gap: 10px;
+            font-weight: 800; font-size: 1.1rem; margin-bottom: 0.5rem;
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .cloud-archive {
+            position: relative; width: 300px; height: 300px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .cloud-archive i {
+            width: 150px; height: 150px; color: white; z-index: 2;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+        }
+
+        .data-rings {
+            position: absolute; width: 100%; height: 100%;
+            border: 2px dashed rgba(0,242,255,0.5); border-radius: 50%;
+            animation: spin 10s linear infinite;
+        }
+
+        .data-rings::before {
+            content: ''; position: absolute;
+            top: -20px; left: -20px; right: -20px; bottom: -20px;
+            border: 2px dashed rgba(112,0,255,0.5); border-radius: 50%;
+            animation: spin 15s linear infinite reverse;
+        }
+
+        @media (max-width: 968px) {
+            .journey-visuals { top: 10%; left: 10%; width: 80%; height: 40vh; perspective: 1000px; }
+            .journey-content-wrapper { top: 50%; left: 5%; width: 90%; height: 40vh; }
+            .sms-bubble { width: 120%; left: -10%; }
+        }
+
+        /* --- Integrations Marquee --- */
+        .integrations {
+            padding: 5rem 0;
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01), transparent);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .marquee-wrapper::before, .marquee-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 150px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .marquee-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-dark), transparent);
+        }
+
+        .marquee-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-dark), transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 30s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .integration-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 3rem;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            margin: 0 1rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .integration-logo:hover {
+            border-color: var(--accent-purple);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(112, 0, 255, 0.1);
+        }
+        
+        .integration-logo i {
+            color: var(--accent-purple);
+        }
+
+        /* --- Dashboard Preview --- */
+        .preview-container {
+            background: linear-gradient(135deg, #101015, #050508);
+            border-radius: 40px;
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+            transform: perspective(1000px) rotateX(10deg);
+        }
+
+        .mock-ui {
+            width: 100%;
+            background: #000;
+            border-radius: 30px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            min-height: 500px;
+        }
+
+        .mock-sidebar {
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mock-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 5rem 10% 2rem;
+            background: #020204;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--text-dim);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 968px) {
+            section {
+                padding: 5rem 5%;
+            }
+
+            .glass-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div class="logo"><i data-lucide="cpu"></i> SMART<span>ATTEND</span></div>
+        <ul class="nav-links">
+            <li><a href="#about">System</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#process">Workflow</a></li>
+            <li><a href="#demo">Preview</a></li>
+        </ul>
+        <a href="#" class="cta-btn">Connect Device</a>
+    </nav>
+
+    <header class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <span class="section-tag" style="opacity: 0;" id="hero-tag">RFID-Powered Automation</span>
+            <h1 id="hero-title">Precision Attendance, Fully Automated.</h1>
+            <p id="hero-para">Eliminate manual logs and human error with our high-fidelity RFID tracking system.
+                Designed for the modern workspace.</p>
+            <div class="hero-btns" id="hero-actions">
+                <a href="#about" class="cta-btn" style="background: var(--accent-blue); border: none;">Experience
+                    Now</a>
+                <a href="#" class="cta-btn" style="background: transparent; color: white; margin-left: 1rem;">View
+                    Specs</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="about">
+        <div class="glass-grid">
+            <div>
+                <span class="section-tag">Intelligence</span>
+                <h2 class="section-title">Beyond simple scanning.</h2>
+                <p style="color: var(--text-dim); font-size: 1.1rem; margin-bottom: 2rem;">
+                    The Smart Attendance System leverages encrypted RFID technology to authenticate and log presence in
+                    milliseconds. Our edge computing hardware ensures that even during network drops, data is preserved
+                    and synced instantly once restored.
+                </p>
+                <div style="display: flex; gap: 2rem;">
+                    <div>
+                        <h4 style="font-size: 2rem; color: var(--accent-blue);">99.9%</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Accuracy Rate</p>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 2rem; color: var(--accent-purple);">0.2s</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Latency</p>
+                    </div>
+                </div>
+            </div>
+            <div class="visual-container reveal-right">
+                <div class="scanning-line"></div>
+                <i data-lucide="fingerprint"
+                    style="width: 200px; height: 200px; color: var(--accent-blue); opacity: 0.2;"></i>
+                <div
+                    style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <div
+                        style="width: 250px; height: 350px; border: 2px dashed var(--accent-blue); border-radius: 20px; opacity: 0.5;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features" style="min-height: 400px;">
+        <span class="section-tag">Capabilities</span>
+        <h2 class="section-title">Engineered for Scale.</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="zap"></i></div>
+                <h3 style="margin-bottom: 1rem;">Real-time Sync</h3>
+                <p style="color: var(--text-dim);">Instant dashboard updates as soon as a tag is
+                    detected. No more end-of-day batches.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+                <h3 style="margin-bottom: 1rem;">Secure Data</h3>
+                <p style="color: var(--text-dim);">AES-128 encryption on every transmission. Your
+                    personnel data remains private and secure.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="layers"></i></div>
+                <h3 style="margin-bottom: 1rem;">Automation</h3>
+                <p style="color: var(--text-dim);">Automatic report generation and integration with
+                    your favorite HR and payroll software.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="workflow" class="workflow-section section">
+        <div style="text-align: center; margin-bottom: 5rem;">
+            <span class="section-tag">Visual Workflow</span>
+            <h2 class="section-title" style="margin-inline: auto;">The Anatomy of a Scan.</h2>
+            <p style="color: var(--text-dim); max-width: 600px; margin-inline: auto;">Watch how data moves securely from a physical tap to an actionable cloud insight in under 200 milliseconds.</p>
+        </div>
+
+        <div class="workflow-grid">
+            <div class="workflow-track">
+                <div class="workflow-particle"></div>
+            </div>
+            
+            <div class="workflow-node" id="node-1">
+                <div class="node-icon-wrapper">
+                    <i data-lucide="scan-line"></i>
+                </div>
+                <h3>1. Tap & Scan</h3>
+                <p>Encrypted RFID card is presented to the hardware node.</p>
+            </div>
+            
+            <div class="workflow-node" id="node-2">
+                <div class="node-icon-wrapper">
+                    <i data-lucide="cpu"></i>
+                </div>
+                <h3>2. Edge Verification</h3>
+                <p>Local processor decrypts and validates identity instantly.</p>
+            </div>
+            
+            <div class="workflow-node" id="node-3">
+                <div class="node-icon-wrapper">
+                    <i data-lucide="cloud-upload"></i>
+                </div>
+                <h3>3. Secure Uplink</h3>
+                <p>Log is transmitted via AES-128 encrypted channel to cloud.</p>
+            </div>
+            
+            <div class="workflow-node" id="node-4">
+                <div class="node-icon-wrapper">
+                    <i data-lucide="layout-dashboard"></i>
+                </div>
+                <h3>4. Live Update</h3>
+                <p>Admin dashboard updates instantly with presence status.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="crazy-journey" id="journey">
+        <div class="journey-sticky">
+            <div class="journey-bg-glow"></div>
+            
+            <div class="journey-visuals">
+                <div class="jv-step jv-1">
+                    <div class="hologram-card">
+                        <i data-lucide="scan-face"></i>
+                        <div class="scan-laser"></div>
+                    </div>
+                </div>
+                <div class="jv-step jv-2">
+                    <div class="data-cylinders">
+                        <div class="cylinder c1"></div>
+                        <div class="cylinder c2"></div>
+                        <div class="cylinder c3"></div>
+                    </div>
+                </div>
+                <div class="jv-step jv-3">
+                    <div class="smartphone-hologram">
+                        <div class="sms-bubble">
+                            <span><i data-lucide="bell-ring"></i> Alert: Arrived</span>
+                            <small style="opacity: 0.8;">08:00:05 AM</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="jv-step jv-4">
+                    <div class="cloud-archive">
+                        <i data-lucide="cloud-cog"></i>
+                        <div class="data-rings"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="journey-content-wrapper">
+                <div class="jc-step jc-1">
+                    <span class="jc-time">08:00 AM</span>
+                    <h2>Gate Scan</h2>
+                    <p>Student taps RFID. Instant millisecond capture at the front gate terminal.</p>
+                </div>
+                <div class="jc-step jc-2">
+                    <span class="jc-time">08:00:01 AM</span>
+                    <h2>Database Verification</h2>
+                    <p>Edge node processes identity & checks against the school schedule for tardiness.</p>
+                </div>
+                <div class="jc-step jc-3">
+                    <span class="jc-time">08:00:05 AM</span>
+                    <h2>Parent SMS</h2>
+                    <p>Automated webhook sends an arrival confirmation directly to the parent's phone.</p>
+                </div>
+                <div class="jc-step jc-4">
+                    <span class="jc-time">15:30 PM</span>
+                    <h2>Cloud Archive</h2>
+                    <p>Exit scan triggers and daily logs are securely backed up for automated reporting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrations Section -->
+    <section class="integrations section">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <span class="section-tag">Seamless Ecosystem</span>
+            <h2 class="section-title" style="margin-inline: auto;">Integrates with everything.</h2>
+            <p style="color: var(--text-dim); max-width: 500px; margin-inline: auto;">Connects instantly to your existing HR and payroll systems. No custom code required.</p>
+        </div>
+        
+        <div class="marquee-wrapper">
+            <div class="marquee-track">
+                <!-- Group 1 -->
+                <div class="integration-logo"><i data-lucide="slack"></i> Slack</div>
+                <div class="integration-logo"><i data-lucide="trello"></i> Trello</div>
+                <div class="integration-logo"><i data-lucide="database"></i> Oracle</div>
+                <div class="integration-logo"><i data-lucide="server"></i> SAP</div>
+                <div class="integration-logo"><i data-lucide="mail"></i> G-Workspace</div>
+                <div class="integration-logo"><i data-lucide="users"></i> Workday</div>
+                <!-- Group 2 (Duplicate for seamless loop) -->
+                <div class="integration-logo"><i data-lucide="slack"></i> Slack</div>
+                <div class="integration-logo"><i data-lucide="trello"></i> Trello</div>
+                <div class="integration-logo"><i data-lucide="database"></i> Oracle</div>
+                <div class="integration-logo"><i data-lucide="server"></i> SAP</div>
+                <div class="integration-logo"><i data-lucide="mail"></i> G-Workspace</div>
+                <div class="integration-logo"><i data-lucide="users"></i> Workday</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="demo">
+        <div style="text-align: center; margin-bottom: 5rem;">
+            <span class="section-tag">Interface Preview</span>
+            <h2 class="section-title" style="margin-inline: auto;">Complete control at your fingertips.</h2>
+        </div>
+        <div class="preview-container">
+            <div class="mock-ui">
+                <div class="mock-sidebar">
+                    <div
+                        style="height: 40px; background: rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 1rem;">
+                    </div>
+                    <div
+                        style="height: 20px; width: 60%; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 2rem;">
+                    </div>
+                    <div
+                        style="height: 30px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 0.5rem;">
+                    </div>
+                    <div
+                        style="height: 30px; background: rgba(0,242,255,0.1); border-radius: 8px; margin-bottom: 0.5rem;">
+                    </div>
+                    <div
+                        style="height: 30px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 0.5rem;">
+                    </div>
+                </div>
+                <div class="mock-main">
+                    <div class="mock-stats">
+                        <div class="stat-box">
+                            <span style="font-size: 0.7rem; color: var(--text-dim);">Total Present</span>
+                            <div style="font-size: 1.5rem; font-weight: 800; margin-top: 0.5rem;">124 / 130</div>
+                        </div>
+                        <div class="stat-box">
+                            <span style="font-size: 0.7rem; color: var(--text-dim);">System Status</span>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: #00ff88; margin-top: 0.5rem;">Online
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <span style="font-size: 0.7rem; color: var(--text-dim);">Active Readers</span>
+                            <div style="font-size: 1.5rem; font-weight: 800; margin-top: 0.5rem;">12 Nodes</div>
+                        </div>
+                    </div>
+                    <div
+                        style="margin-top: 2rem; height: 250px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); padding: 1.5rem;">
+                        <span style="font-size: 0.8rem; color: var(--text-dim);">Real-time Activity Log</span>
+                        <div style="margin-top: 1rem; border-left: 2px solid var(--accent-blue); padding-left: 1rem;">
+                            <p style="font-size: 0.9rem;">16:22:15 - ID_0984 - Entry Logged</p>
+                            <p style="font-size: 0.9rem; opacity: 0.5;">16:21:40 - ID_1122 - Entry Logged</p>
+                            <p style="font-size: 0.9rem; opacity: 0.3;">16:21:12 - ID_0543 - Entry Logged</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="logo"><i data-lucide="cpu"></i> SMART<span>ATTEND</span></div>
+                <p style="color: var(--text-dim); max-width: 300px; margin-top: 1rem;">Automating physical presence for
+                    the decentralized workspace.</p>
+            </div>
+            <div style="display: flex; gap: 4rem;">
+                <div>
+                    <h5 style="margin-bottom: 1.5rem;">Platform</h5>
+                    <ul style="list-style: none; color: var(--text-dim); display: grid; gap: 0.5rem;">
+                        <li>Hardware</li>
+                        <li>Dashboard</li>
+                        <li>API Access</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 style="margin-bottom: 1.5rem;">Company</h5>
+                    <ul style="list-style: none; color: var(--text-dim); display: grid; gap: 0.5rem;">
+                        <li>About Us</li>
+                        <li>Privacy</li>
+                        <li>Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem;">
+            <p style="font-size: 0.8rem; color: var(--text-dim);">&copy; 2026 Smart Attendance Inc. All rights reserved.
+            </p>
+            <div class="social-links">
+                <a href="#"><i data-lucide="github"></i></a>
+                <a href="#"><i data-lucide="twitter"></i></a>
+                <a href="#"><i data-lucide="linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- Three.js Hero Background ---
+        const initHeroThree = () => {
+            const canvas = document.querySelector('#hero-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create particles
+            const particlesCount = 2000;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 10;
+            }
+
+            const particlesGeometry = new THREE.BufferGeometry();
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.005,
+                color: '#00f2ff',
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            camera.position.z = 3;
+
+            // Mouse Interaction
+            let mouseX = 0;
+            let mouseY = 0;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = event.clientX / window.innerWidth - 0.5;
+                mouseY = event.clientY / window.innerHeight - 0.5;
+            });
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                particlesMesh.rotation.y += 0.001;
+                particlesMesh.rotation.x += 0.001;
+
+                // Subtle lag movement
+                particlesMesh.position.x += (mouseX * 0.5 - particlesMesh.position.x) * 0.05;
+                particlesMesh.position.y += (-mouseY * 0.5 - particlesMesh.position.y) * 0.05;
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        initHeroThree();
+
+        // --- GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Entrance Animation
+        const tl = gsap.timeline();
+        tl.to("#hero-tag", { opacity: 1, duration: 1 })
+            .from("#hero-title", { y: 100, opacity: 0, duration: 1, ease: "power4.out" }, "-=0.8")
+            .from("#hero-para", { y: 50, opacity: 0, duration: 1, ease: "power4.out" }, "-=0.8")
+            .from("#hero-actions", { y: 50, opacity: 0, duration: 1, ease: "power4.out" }, "-=0.8")
+            .from("#navbar", { y: -100, opacity: 0, duration: 1, ease: "power4.out" }, "-=1");
+
+        // Scroll Animations for Sections
+        gsap.utils.toArray('section').forEach(section => {
+            const targets = section.querySelectorAll('.section-title, .section-tag, .section-desc');
+            if (targets.length > 0) {
+                gsap.from(targets, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 85%",
+                    },
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.2,
+                    ease: "power3.out"
+                });
+            }
+        });
+
+        // Feature Cards Stagger (Individual triggers for better mobile reliability)
+        gsap.utils.toArray(".feature-card").forEach((card, index) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 90%",
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: index * 0.1,
+                ease: "power2.out"
+            });
+        });
+
+        // Visual Workflow Animation
+        const nodes = gsap.utils.toArray('.workflow-node');
+        const particle = document.querySelector('.workflow-particle');
+        const positions = ["12.5%", "37.5%", "62.5%", "87.5%"];
+        
+        if(nodes.length === 4 && particle) {
+            const flowTl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+            
+            flowTl.call(() => nodes[0].classList.add('active'))
+                  .to(particle, { left: positions[1], duration: 1, ease: "power1.inOut", delay: 1 })
+                  .call(() => { nodes[0].classList.remove('active'); nodes[1].classList.add('active'); })
+                  .to(particle, { left: positions[2], duration: 1, ease: "power1.inOut", delay: 0.5 })
+                  .call(() => { nodes[1].classList.remove('active'); nodes[2].classList.add('active'); })
+                  .to(particle, { left: positions[3], duration: 1, ease: "power1.inOut", delay: 0.5 })
+                  .call(() => { nodes[2].classList.remove('active'); nodes[3].classList.add('active'); })
+                  .to(particle, { opacity: 0, scale: 2, duration: 0.5, delay: 1 })
+                  .call(() => { nodes[3].classList.remove('active'); })
+                  .set(particle, { left: positions[0], opacity: 1, scale: 1 });
+
+            ScrollTrigger.create({
+                trigger: ".workflow-section",
+                start: "top 70%",
+                onEnter: () => flowTl.play(),
+                onLeave: () => flowTl.pause(),
+                onEnterBack: () => flowTl.play(),
+                onLeaveBack: () => flowTl.pause()
+            });
+            flowTl.pause();
+        }
+
+        // Preview Perspective Animation
+        gsap.to(".preview-container", {
+            scrollTrigger: {
+                trigger: ".preview-container",
+                start: "top 90%",
+                end: "bottom 20%",
+                scrub: 1
+            },
+            rotateX: 0,
+            y: -50,
+            duration: 1
+        });
+
+        // Navbar blur on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.style.padding = '1rem 5%';
+                nav.style.background = 'rgba(5, 5, 8, 0.9)';
+            } else {
+                nav.style.padding = '2rem 5%';
+                nav.style.background = 'transparent';
+            }
+        });
+        // Crazy Journey Scrub Animation
+        const crazyJourney = document.querySelector(".crazy-journey");
+        if(crazyJourney) {
+            const journeyTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".crazy-journey",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1
+                }
+            });
+
+            const jSteps = 4;
+            
+            // Initial states setup
+            gsap.set(".jv-step", { opacity: 0, z: -200, scale: 0.8 });
+            gsap.set(".jc-step", { opacity: 0, y: 50 });
+
+            for(let i = 1; i <= jSteps; i++) {
+                // Animate in
+                journeyTl.to(`.jv-${i}`, { opacity: 1, z: 0, scale: 1, duration: 1 }, `step${i}`)
+                         .to(`.jc-${i}`, { opacity: 1, y: 0, duration: 1 }, `step${i}`);
+                
+                // Hold
+                journeyTl.to({}, { duration: 1 });
+                
+                // Animate out (except the last one)
+                if(i < jSteps) {
+                    journeyTl.to(`.jv-${i}`, { opacity: 0, z: 200, scale: 1.2, duration: 1 }, `step${i}Out`)
+                             .to(`.jc-${i}`, { opacity: 0, y: -50, duration: 1 }, `step${i}Out`);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
