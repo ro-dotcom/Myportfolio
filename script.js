@@ -402,7 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 1; i <= frameCount; i++) preloadQueue.push(i);
 
         function processNextBatch() {
-            const batchSize = 10; // Load 10 images concurrently
+            const batchSize = 20; // Load 20 images concurrently for faster background fetching
             if (preloadQueue.length === 0) return;
             
             let loadedThisBatch = 0;
@@ -413,15 +413,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 const img = new Image();
                 img.onload = () => {
                     images[index - 1] = img;
-                    if (index === 1) resizeCanvas(); // Render first frame immediately
+                    if (index === 1 || Math.round(imageSeq.frame) === index) resizeCanvas(); // Update view if needed
                     loadedThisBatch++;
                     if (loadedThisBatch === toLoad) {
-                        setTimeout(processNextBatch, 20); // Yield to main thread
+                        setTimeout(processNextBatch, 10); // Yield to main thread
                     }
                 };
                 img.onerror = () => {
                     loadedThisBatch++;
-                    if (loadedThisBatch === toLoad) setTimeout(processNextBatch, 20);
+                    if (loadedThisBatch === toLoad) setTimeout(processNextBatch, 10);
                 };
                 img.src = currentFrame(index);
             }
@@ -432,11 +432,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function render() {
             if(!context) return;
-            context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            const currentFrameNum = Math.round(imageSeq.frame) || 1;
-            const img = images[currentFrameNum - 1];
+            
+            let targetFrameNum = Math.round(imageSeq.frame) || 1;
+            let img = images[targetFrameNum - 1];
 
+            // If the exact frame isn't loaded yet, fallback to the closest previously loaded frame
+            if (!img || !img.complete || img.naturalWidth === 0) {
+                // Search backwards for the most recent loaded frame
+                for (let i = targetFrameNum - 1; i >= 0; i--) {
+                    if (images[i] && images[i].complete && images[i].naturalWidth !== 0) {
+                        img = images[i];
+                        break;
+                    }
+                }
+                // If still nothing, search forwards
+                if (!img) {
+                    for (let i = targetFrameNum; i < images.length; i++) {
+                        if (images[i] && images[i].complete && images[i].naturalWidth !== 0) {
+                            img = images[i];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Only clear and draw if we actually found a valid frame to show
             if (img && img.complete && img.naturalWidth !== 0) {
+                context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
                 const canvasRenderWidth = window.innerWidth;
                 const canvasRenderHeight = window.innerHeight;
 
