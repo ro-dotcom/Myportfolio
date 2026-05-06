@@ -1,0 +1,27 @@
+{
+  "name": "myworldportfolio",
+  "version": "1.0.0",
+  "description": "Atul's Creative Portfolio - A modern web portfolio showcasing web development projects",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ro-dotcom/Myportfolio.git"
+  },
+  "keywords": [
+    "portfolio",
+    "web-development",
+    "vercel-analytics"
+  ],
+  "author": "Atul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ro-dotcom/Myportfolio/issues"
+  },
+  "homepage": "https://github.com/ro-dotcom/Myportfolio#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
